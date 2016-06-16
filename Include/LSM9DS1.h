@@ -329,7 +329,7 @@ protected:
 	uint8_t _mAddress, _xgAddress;
 	
 	//file discriptor used to configure the I2C bus
-	int file;
+	int mfile, xgfile;
 	
 	// gRes, aRes, and mRes store the current resolution for each sensor. 
 	// Units of these values would be DPS (or g's or Gs's) per ADC tick.
@@ -405,7 +405,7 @@ protected:
 	// Input:
 	//	- subAddress = Register to be written to.
 	//	- data = data to be written to the register.
-	void mWriteByte(uint8_t subAddress, uint8_t data);
+	int mWriteByte(uint8_t subAddress, uint8_t data);
 	
 	// xmReadByte() -- Read a byte from a register in the accel/mag sensor
 	// Input:
@@ -429,7 +429,7 @@ protected:
 	// Input:
 	//	- subAddress = Register to be written to.
 	//	- data = data to be written to the register.
-	void xgWriteByte(uint8_t subAddress, uint8_t data);
+	int xgWriteByte(uint8_t subAddress, uint8_t data);
 	
 	// calcgRes() -- Calculate the resolution of the gyroscope.
 	// This function will set the value of the gRes variable. gScale must
@@ -489,14 +489,14 @@ protected:
 	///////////////////
 	// initI2C() -- Initialize the I2C hardware.
 	// This function will setup all I2C pins and related hardware.
-	void initI2C();
+	int initI2C();
 	
 	// I2CwriteByte() -- Write a byte out of I2C to a register in the device
 	// Input:
 	//	- address = The 7-bit I2C address of the slave device.
 	//	- subAddress = The register to be written to.
 	//	- data = Byte to be written to the register.
-	void I2CwriteByte(uint8_t address, uint8_t subAddress, uint8_t data);
+	int I2CwriteByte(int address, uint8_t subAddress, uint8_t data);
 	
 	// I2CreadByte() -- Read a single byte from a register over I2C.
 	// Input:
@@ -504,7 +504,7 @@ protected:
 	//	- subAddress = The register to be read from.
 	// Output:
 	//	- The byte read from the requested address.
-	uint8_t I2CreadByte(uint8_t address, uint8_t subAddress);
+	uint8_t I2CreadByte(int address, uint8_t subAddress);
 	
 	// I2CreadBytes() -- Read a series of bytes, starting at a register via SPI
 	// Input:
@@ -514,7 +514,7 @@ protected:
 	//	- count = Number of registers to be read.
 	// Output: No value is returned by the function, but the registers read are
 	// 		all stored in the *dest array given.
-	uint8_t I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count);
+	uint8_t I2CreadBytes(int address, uint8_t subAddress, uint8_t * dest, uint8_t count);
 };
 
 #endif // SFE_LSM9DS1_H //
