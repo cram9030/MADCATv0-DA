@@ -38,12 +38,12 @@ int main(){
 	}
 	else{
 		while(1){
-		imu.readGyro();
-		imu.readAccel();
-		imu.readMag();
-		cout << "Gyro -> gx: " << imu.gx << " gy: " << imu.gy << " gz: " << imu.gz << endl;
-		cout << "Accel -> ax: " << imu.ax << " ay: " << imu.ay << " az: " << imu.az << endl;
-		cout << "Mag -> mx: " << imu.mx << " my: " << imu.my << " mz: " << imu.mz << endl;
+			imu.readGyro();
+			cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
+			imu.readAccel();
+			cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
+			imu.readMag();
+			cout << "Mag -> mx: " << imu.calcMag(imu.mx) << " my: " << imu.calcMag(imu.my) << " mz: " << imu.calcMag(imu.mz) << endl;
 		}
 	}
 }

@@ -25,6 +25,7 @@ Distributed as-is; no warranty is given.
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
 
+#include <iomanip>
 #include <fcntl.h>    /* For O_RDWR */
 #include <unistd.h>   /* For open(), creat() */
 #include <iostream>
@@ -36,6 +37,9 @@ Distributed as-is; no warranty is given.
 
 //Namespaces
 using namespace std;
+
+//TYPEDEF
+typedef unsigned char uint8_t;
 
 #define LSM9DS1_COMMUNICATION_TIMEOUT 1000
 
@@ -158,17 +162,23 @@ uint16_t LSM9DS1::begin()
 	
 	// Now, initialize our hardware interface.
 	if (settings.device.commInterface == IMU_MODE_I2C)	// If we're using I2C
-		int file = initI2C();	// Initialize I2C
+	{
+		int error = initI2C();	// Initialize I2C
+	}
 	else if (settings.device.commInterface == IMU_MODE_SPI) 	// else, if we're using SPI
+	{
 		//initSPI();	// Initialize SPI
 		cout << "SPI is not currently implemented please use I2C" << endl;
 		return 1;
+	}
 		
 	// To verify communication, we can read from the WHO_AM_I register of
 	// each device. Store those in a variable so we can return them.
 	uint8_t mTest = mReadByte(WHO_AM_I_M);		// Read the gyro WHO_AM_I
 	uint8_t xgTest = xgReadByte(WHO_AM_I_XG);	// Read the accel/mag WHO_AM_I
 	uint16_t whoAmICombined = (xgTest << 8) | mTest;
+	cout << "mTest: " << hex << static_cast<int>(mTest) << endl;
+	cout << "xgTest: " << hex << static_cast<int>(xgTest) << endl;
 	
 	if (whoAmICombined != ((WHO_AM_I_AG_RSP << 8) | WHO_AM_I_M_RSP))
 		return 0;
@@ -564,8 +574,10 @@ void LSM9DS1::readGyro()
 	uint8_t temp[6]; // We'll read six bytes from the gyro into temp
 	xgReadBytes(OUT_X_L_G, temp, 6); // Read 6 bytes, beginning at OUT_X_L_G
 	gx = (temp[1] << 8) | temp[0]; // Store x-axis values into gx
+	cout << gx << endl;
 	gy = (temp[3] << 8) | temp[2]; // Store y-axis values into gy
 	gz = (temp[5] << 8) | temp[4]; // Store z-axis values into gz
+
 	if (_autoCalc)
 	{
 		gx -= gBiasRaw[X_AXIS];
@@ -1144,7 +1156,8 @@ int LSM9DS1::I2CwriteByte(int file, uint8_t address, uint8_t data)
 
 uint8_t LSM9DS1::I2CreadByte(int file, uint8_t subAddress)
 {
-	uint8_t data[1]; // `data` will store the register data	
+	//uint8_t data[1]; // `data` will store the register data	
+	unsigned char data[1];
 	
 	//write subaddress to LSM9DS1
 	unsigned char buffer[1];
@@ -1155,18 +1168,25 @@ uint8_t LSM9DS1::I2CreadByte(int file, uint8_t subAddress)
 	}
 	
 	//Read returned data
-	if (read(file, data, 1) != 1) {
+	if (read(file, data, 0x01) != 0x01) {
 		cout << "Failed to read the full buffer" << endl;
 		return 1;
 	}
-	return data[1];                             // Return data read from slave register
+	
+	return data[0];                             // Return data read from slave register
 }
 
 uint8_t LSM9DS1::I2CreadBytes(int file, uint8_t subAddress, uint8_t * dest, uint8_t count)
 {
 	//write subaddress to LSM9DS1
-	unsigned char buffer[2];
-	buffer[1] = subAddress | 0x80;
+	unsigned char buffer[1];
+	
+	for(int i=0; i<count;i++){
+		dest[i] = I2CreadByte(file,subAddress+i);
+		//cout<<"dest["<<i<<"]: "<<static_cast<int>(dest[i])<<endl;
+	}
+	
+	/*buffer[1] = subAddress | 0x80;
 	if (write(file, buffer, 1) != 1) {
 		cout << "Failed write to the device" << endl;
 		return 1;
@@ -1178,9 +1198,13 @@ uint8_t LSM9DS1::I2CreadBytes(int file, uint8_t subAddress, uint8_t * dest, uint
 		cout << "Failed to read the full buffer" << endl;
 		return 1;
 	}
-	for (int i=0; i<count;)
+	
+	for (int i=0; i<static_cast<int>(count);i++)
 	{
-		dest[i++] = data[i];
-	}
+		//cout<<"count: "<< hex << static_cast<int>(count)<<endl;
+		dest[i] = data[i];
+		cout<<"data["<<i<<"]: "<<static_cast<int>(data[i])<<endl;
+	}*/
+	
 	return count;
 }
