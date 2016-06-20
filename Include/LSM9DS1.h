@@ -108,6 +108,14 @@ public:
 	// those _after_ calling readGyro().
 	void readGyro();
 	
+	// read2GyroAxis(plane) -- Read a specific pair of axis of the accelerometer.
+	// This function will read four accelerometer output registers for a given plane.
+	// The readings are stored in the class' ax, ay, and az variables. Read
+	// those _after_ calling read2GyroAxis(int plane).
+	// Input:
+	//	- plane: can be either 1 = XY plane, 2 = XZ plane, 3 = YZ plane.
+	void read2GyroAxis(int plane);
+	
 	// int16_t readGyro(axis) -- Read a specific axis of the gyroscope.
 	// [axis] can be any of X_AXIS, Y_AXIS, or Z_AXIS.
 	// Input:
@@ -121,6 +129,14 @@ public:
 	// The readings are stored in the class' ax, ay, and az variables. Read
 	// those _after_ calling readAccel().
 	void readAccel();
+	
+	// read2AccelAxis(plane) -- Read a specific pair of axis of the accelerometer.
+	// This function will read four accelerometer output registers for a given plane.
+	// The readings are stored in the class' ax, ay, and az variables. Read
+	// those _after_ calling read2AccelAxis(int plane).
+	// Input:
+	//	- plane: can be either 1 = XY plane, 2 = XZ plane, 3 = YZ plane.
+	void read2AccelAxis(int plane);
 	
 	// int16_t readAccel(axis) -- Read a specific axis of the accelerometer.
 	// [axis] can be any of X_AXIS, Y_AXIS, or Z_AXIS.

@@ -533,6 +533,39 @@ void LSM9DS1::readAccel()
 	}
 }
 
+void LSM9DS1::read2AccelAxis(int plane){
+	switch(plane){
+		case 1: {
+			uint8_t temp[4]; // We'll read four bytes from the accelerometer into temp
+			xgReadBytes(OUT_X_L_XL, temp, 4); // Read 6 bytes, beginning at OUT_X_L_XL
+			ax = (temp[1] << 8) | temp[0]; // Store x-axis values into ax
+			ay = (temp[3] << 8) | temp[2]; // Store y-axis values into ay
+			if (_autoCalc)
+			{
+				ax -= aBiasRaw[X_AXIS];
+				ay -= aBiasRaw[Y_AXIS];
+			}
+			break;
+		}
+		case 2: {
+			readAccel();
+			break;
+		}
+		case 3: {
+			uint8_t temp[4]; // We'll read four bytes from the accelerometer into temp
+			xgReadBytes(OUT_X_L_XL + (2 * Y_AXIS), temp, 4); // Read 4 bytes, beginning at OUT_X_L_XL + (2 * Y_AXIS)
+			ay = (temp[1] << 8) | temp[0]; // Store y-axis values into ay
+			az = (temp[3] << 8) | temp[2]; // Store z-axis values into az
+			if (_autoCalc)
+			{
+				ay -= aBiasRaw[Y_AXIS];
+				az -= aBiasRaw[Z_AXIS];
+			}
+			break;
+		}
+	}
+}
+
 int16_t LSM9DS1::readAccel(lsm9ds1_axis axis)
 {
 	uint8_t temp[2];
@@ -582,6 +615,39 @@ void LSM9DS1::readGyro()
 		gx -= gBiasRaw[X_AXIS];
 		gy -= gBiasRaw[Y_AXIS];
 		gz -= gBiasRaw[Z_AXIS];
+	}
+}
+
+void LSM9DS1::read2GyroAxis(int plane){
+	switch(plane){
+		case 1: {
+			uint8_t temp[4]; // We'll read four bytes from the accelerometer into temp
+			xgReadBytes(OUT_X_L_G, temp, 4); // Read 6 bytes, beginning at OUT_X_L_XL
+			gx = (temp[1] << 8) | temp[0]; // Store x-axis values into ax
+			gy = (temp[3] << 8) | temp[2]; // Store y-axis values into ay
+			if (_autoCalc)
+			{
+				gx -= aBiasRaw[X_AXIS];
+				gy -= aBiasRaw[Y_AXIS];
+			}
+			break;
+		}
+		case 2: {
+			readAccel();
+			break;
+		}
+		case 3: {
+			uint8_t temp[4]; // We'll read four bytes from the accelerometer into temp
+			xgReadBytes(OUT_X_L_G + (2 * Y_AXIS), temp, 4); // Read 4 bytes, beginning at OUT_X_L_XL + (2 * Y_AXIS)
+			gy = (temp[1] << 8) | temp[0]; // Store y-axis values into ay
+			gz = (temp[3] << 8) | temp[2]; // Store z-axis values into az
+			if (_autoCalc)
+			{
+				gy -= aBiasRaw[Y_AXIS];
+				gz -= aBiasRaw[Z_AXIS];
+			}
+			break;
+		}
 	}
 }
 
