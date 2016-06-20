@@ -574,7 +574,6 @@ void LSM9DS1::readGyro()
 	uint8_t temp[6]; // We'll read six bytes from the gyro into temp
 	xgReadBytes(OUT_X_L_G, temp, 6); // Read 6 bytes, beginning at OUT_X_L_G
 	gx = (temp[1] << 8) | temp[0]; // Store x-axis values into gx
-	cout << gx << endl;
 	gy = (temp[3] << 8) | temp[2]; // Store y-axis values into gy
 	gz = (temp[5] << 8) | temp[4]; // Store z-axis values into gz
 
@@ -1180,31 +1179,16 @@ uint8_t LSM9DS1::I2CreadBytes(int file, uint8_t subAddress, uint8_t * dest, uint
 {
 	//write subaddress to LSM9DS1
 	unsigned char buffer[1];
-	
-	for(int i=0; i<count;i++){
-		dest[i] = I2CreadByte(file,subAddress+i);
-		//cout<<"dest["<<i<<"]: "<<static_cast<int>(dest[i])<<endl;
-	}
-	
-	/*buffer[1] = subAddress | 0x80;
+	buffer[0] = subAddress | 0x80;
 	if (write(file, buffer, 1) != 1) {
 		cout << "Failed write to the device" << endl;
 		return 1;
 	}
 	
-	uint8_t data[count];
-
-	if (read(file, data, count) != count) {
-		cout << "Failed to read the full buffer" << endl;
+	if (read(file, dest, count) != count) {
+		printf("Failed to read the full buffer");
 		return 1;
 	}
-	
-	for (int i=0; i<static_cast<int>(count);i++)
-	{
-		//cout<<"count: "<< hex << static_cast<int>(count)<<endl;
-		dest[i] = data[i];
-		cout<<"data["<<i<<"]: "<<static_cast<int>(data[i])<<endl;
-	}*/
 	
 	return count;
 }

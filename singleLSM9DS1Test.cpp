@@ -3,16 +3,27 @@
 // INCLUDED LIBRARIES
 #include "Include/LSM9DS1.h"
 #include <iostream>
+#include <fstream>
+#include <chrono>
+#include <thread>
 
 // ******************************************************************************************
 // NAMESPACE
 
 using namespace std;
+using namespace std::chrono;
 
 // ******************************************************************************************
 // MAIN
 
 int main(){
+	///////////////////////
+	// Data Storage Init //
+	///////////////////////
+	ofstream dataFile; //create file stream
+	dataFile.open ("magOffAccUpdateNoCalc.txt"); //open text file
+	dataFile <<"Time,xAcc,yAcc,zAcc,xGyro,yGyro,zGyro,xMag,yMag,zMag"<<endl;//write colomn headers
+	
 	//////////////////////////
 	// LSM9DS1 Library Init //
 	//////////////////////////
@@ -33,17 +44,22 @@ int main(){
 	imu.settings.device.mAddress = LSM9DS1_M;
 	imu.settings.device.agAddress = LSM9DS1_AG;
 	
+	imu.settings.mag.enabled = false;
+	
+	//Set the inital time by creating a high resolution clock object
+	high_resolution_clock::time_point t1 = high_resolution_clock::now();
+	
 	if (!imu.begin()){
 		cout << "Could not intialize IMU" << endl;
 	}
 	else{
 		while(1){
-			imu.readGyro();
-			cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
+			//imu.readGyro();
+			//cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
 			imu.readAccel();
 			cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
-			imu.readMag();
-			cout << "Mag -> mx: " << imu.calcMag(imu.mx) << " my: " << imu.calcMag(imu.my) << " mz: " << imu.calcMag(imu.mz) << endl;
+			//imu.readMag();
+			//dataFile <<duration_cast<duration<double>>(high_resolution_clock::now() - t1).count()<<","<<imu.readAccel(X_AXIS)<<","<<imu.readAccel(Y_AXIS)<<","<<imu.az<<","<<imu.gx<<","<<imu.gy<<","<<imu.gz<<","<<imu.mx<<","<<imu.my<<","<<imu.mz<<endl;
 		}
 	}
 }
