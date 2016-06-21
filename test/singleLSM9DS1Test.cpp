@@ -40,7 +40,7 @@ int main(){
 	// Before initializing the IMU, there are a few settings
 	// we may need to adjust. Use the settings struct to set
 	// the device's communication mode and addresses:
-	imu.settings.device.commInterface = IMU_MODE_I2C;
+	imu.settings.device.commInterface = IMU_MODE_SPI;
 	imu.settings.device.mAddress = LSM9DS1_M;
 	imu.settings.device.agAddress = LSM9DS1_AG;
 	
@@ -54,12 +54,12 @@ int main(){
 	}
 	else{
 		while(1){
-			//imu.readGyro();
-			imu.read2GyroAxis(1);
+			imu.readGyro();
+			//imu.read2GyroAxis(1);
 			//cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
-			//imu.readAccel();
-			imu.read2AccelAxis(1);
-			//cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
+			imu.readAccel();
+			//imu.read2AccelAxis(1);
+			cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
 			//imu.readMag();
 			dataFile <<duration_cast<duration<double>>(high_resolution_clock::now() - t1).count()<<","<<imu.readAccel(X_AXIS)<<","<<imu.readAccel(Y_AXIS)<<","<<imu.az<<","<<imu.gx<<","<<imu.gy<<","<<imu.gz<<","<<imu.mx<<","<<imu.my<<","<<imu.mz<<endl;
 		}
