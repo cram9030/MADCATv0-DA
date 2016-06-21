@@ -24,6 +24,7 @@ Distributed as-is; no warranty is given.
 
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
+#include "SPIDevice.h"
 
 #define LSM9DS1_AG_ADDR(sa0)	((sa0) == 0 ? 0x6A : 0x6B)
 #define LSM9DS1_M_ADDR(sa1)		((sa1) == 0 ? 0x1C : 0x1E)
@@ -470,8 +471,7 @@ protected:
 	///////////////////
 	// SPI Functions //
 	///////////////////
-	SPIDevice *busDevice = new SPIDevice(0,0);
-
+	SPIDevice *busDevice;
 	// initSPI() -- Initialize the SPI hardware.
 	// This function will setup all SPI pins and related hardware.
 	void initSPI();
@@ -481,7 +481,7 @@ protected:
 	//	- csPin = The chip select pin of the slave device.
 	//	- subAddress = The register to be written to.
 	//	- data = Byte to be written to the register.
-	void SPIwriteByte(unsigned int regAddress, unsigned char value);
+	void SPIwriteByte(uint8_t regAddress, uint8_t value);
 	
 	// SPIreadByte() -- Read a single byte from a register over SPI.
 	// Input:
@@ -489,7 +489,7 @@ protected:
 	//	- subAddress = The register to be read from.
 	// Output:
 	//	- The byte read from the requested address.
-	uint8_t SPIreadByte(unsigned int registerAddress);
+	uint8_t SPIreadByte(uint8_t registerAddress);
 	
 	// SPIreadBytes() -- Read a series of bytes, starting at a register via SPI
 	// Input:

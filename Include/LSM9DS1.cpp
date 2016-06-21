@@ -24,7 +24,6 @@ Distributed as-is; no warranty is given.
 #include "LSM9DS1.h"
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
-#include "SPIDevice.h"
 
 #include <iomanip>
 #include <fcntl.h>    /* For O_RDWR */
@@ -1061,7 +1060,7 @@ int LSM9DS1::xgWriteByte(uint8_t subAddress, uint8_t data)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		return I2CwriteByte(xgfile, subAddress, data);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		SPIwriteByte(_xgAddress, subAddress, data);
+		SPIwriteByte(/*_xgAddress, */subAddress, data);
 	else
 		return 0;
 }
@@ -1073,7 +1072,7 @@ int LSM9DS1::mWriteByte(uint8_t subAddress, uint8_t data)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		return I2CwriteByte(mfile, subAddress, data);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		SPIwriteByte(_mAddress, subAddress, data);
+		SPIwriteByte(/*_mAddress, */subAddress, data);
 	else
 		return 0;
 }
@@ -1085,7 +1084,7 @@ uint8_t LSM9DS1::xgReadByte(uint8_t subAddress)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		return I2CreadByte(xgfile, subAddress);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		return SPIreadByte(_xgAddress, subAddress);
+		return SPIreadByte(/*_xgAddress, */subAddress);
 }
 
 void LSM9DS1::xgReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count)
@@ -1095,7 +1094,7 @@ void LSM9DS1::xgReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		I2CreadBytes(xgfile, subAddress, dest, count);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		SPIreadBytes(_xgAddress, subAddress, dest, count);
+		SPIreadBytes(/*_xgAddress, */dest, count, subAddress);
 }
 
 uint8_t LSM9DS1::mReadByte(uint8_t subAddress)
@@ -1105,7 +1104,7 @@ uint8_t LSM9DS1::mReadByte(uint8_t subAddress)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		return I2CreadByte(mfile, subAddress);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		return SPIreadByte(_mAddress, subAddress);
+		return SPIreadByte(/*_mAddress, */subAddress);
 }
 
 void LSM9DS1::mReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count)
@@ -1115,7 +1114,7 @@ void LSM9DS1::mReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		I2CreadBytes(mfile, subAddress, dest, count);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		SPIreadBytes(_mAddress, subAddress, dest, count);
+		SPIreadBytes(/*_mAddress, */dest, count, subAddress);
 }
 
 void LSM9DS1::initSPI()
@@ -1133,13 +1132,13 @@ void LSM9DS1::initSPI()
 	// Data is captured on rising edge of clock (CPHA = 0)
 	// Base value of the clock is HIGH (CPOL = 1)
 	SPI.setDataMode(SPI_MODE0);*/
-
+	busDevice = new SPIDevice(0,0);
 	busDevice->setSpeed(4000000);
 	busDevice->setMode(SPIDevice::MODE2);
 
 }
 
-void LSM9DS1::SPIwriteByte(unsigned int regAddress, unsigned char value)
+void LSM9DS1::SPIwriteByte(uint8_t regAddress, uint8_t value)
 {
 	/*digitalWrite(csPin, LOW); // Initiate communication
 	
@@ -1154,7 +1153,7 @@ void LSM9DS1::SPIwriteByte(unsigned int regAddress, unsigned char value)
 
 }
 
-uint8_t LSM9DS1::SPIreadByte(unsigned int registerAddress)
+uint8_t LSM9DS1::SPIreadByte(uint8_t registerAddress)
 {
 	// uint8_t temp;
 	// // Use the multiple read function to read 1 byte. 
