@@ -1,7 +1,7 @@
 
 // ******************************************************************************************
 // INCLUDED LIBRARIES
-#include "Include/LSM9DS1.h"
+#include "../Include/LSM9DS1.h"
 #include <iostream>
 #include <fstream>
 #include <chrono>

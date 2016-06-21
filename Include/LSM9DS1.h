@@ -470,6 +470,8 @@ protected:
 	///////////////////
 	// SPI Functions //
 	///////////////////
+	SPIDevice *busDevice = new SPIDevice(0,0);
+
 	// initSPI() -- Initialize the SPI hardware.
 	// This function will setup all SPI pins and related hardware.
 	void initSPI();
@@ -479,7 +481,7 @@ protected:
 	//	- csPin = The chip select pin of the slave device.
 	//	- subAddress = The register to be written to.
 	//	- data = Byte to be written to the register.
-	void SPIwriteByte(uint8_t csPin, uint8_t subAddress, uint8_t data);
+	void SPIwriteByte(unsigned int regAddress, unsigned char value);
 	
 	// SPIreadByte() -- Read a single byte from a register over SPI.
 	// Input:
@@ -487,7 +489,7 @@ protected:
 	//	- subAddress = The register to be read from.
 	// Output:
 	//	- The byte read from the requested address.
-	uint8_t SPIreadByte(uint8_t csPin, uint8_t subAddress);
+	uint8_t SPIreadByte(unsigned int registerAddress);
 	
 	// SPIreadBytes() -- Read a series of bytes, starting at a register via SPI
 	// Input:
@@ -497,8 +499,7 @@ protected:
 	//	- count = Number of registers to be read.
 	// Output: No value is returned by the function, but the registers read are
 	// 		all stored in the *dest array given.
-	void SPIreadBytes(uint8_t csPin, uint8_t subAddress, 
-							uint8_t * dest, uint8_t count);
+	void SPIreadBytes(uint8_t * dest, unsigned int count, unsigned int startAddress);
 	
 	///////////////////
 	// I2C Functions //

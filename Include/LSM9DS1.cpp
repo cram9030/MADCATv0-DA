@@ -24,6 +24,7 @@ Distributed as-is; no warranty is given.
 #include "LSM9DS1.h"
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
+#include "SPIDevice.h"
 
 #include <iomanip>
 #include <fcntl.h>    /* For O_RDWR */
@@ -167,9 +168,9 @@ uint16_t LSM9DS1::begin()
 	}
 	else if (settings.device.commInterface == IMU_MODE_SPI) 	// else, if we're using SPI
 	{
-		//initSPI();	// Initialize SPI
-		cout << "SPI is not currently implemented please use I2C" << endl;
-		return 1;
+		initSPI();	// Initialize SPI
+		//cout << "SPI is not currently implemented please use I2C" << endl;
+		//return 1;
 	}
 		
 	// To verify communication, we can read from the WHO_AM_I register of
@@ -1132,9 +1133,13 @@ void LSM9DS1::initSPI()
 	// Data is captured on rising edge of clock (CPHA = 0)
 	// Base value of the clock is HIGH (CPOL = 1)
 	SPI.setDataMode(SPI_MODE0);*/
+
+	busDevice->setSpeed(4000000);
+	busDevice->setMode(SPIDevice::MODE2);
+
 }
 
-void LSM9DS1::SPIwriteByte(uint8_t csPin, uint8_t subAddress, uint8_t data)
+void LSM9DS1::SPIwriteByte(unsigned int regAddress, unsigned char value)
 {
 	/*digitalWrite(csPin, LOW); // Initiate communication
 	
@@ -1144,34 +1149,42 @@ void LSM9DS1::SPIwriteByte(uint8_t csPin, uint8_t subAddress, uint8_t data)
 	SPI.transfer(data); // Send data
 	
 	digitalWrite(csPin, HIGH); // Close communication*/
+
+	busDevice->writeRegister(regAddress, value);
+
 }
 
-uint8_t LSM9DS1::SPIreadByte(uint8_t csPin, uint8_t subAddress)
+uint8_t LSM9DS1::SPIreadByte(unsigned int registerAddress)
 {
-	uint8_t temp;
-	// Use the multiple read function to read 1 byte. 
-	// Value is returned to `temp`.
-	SPIreadBytes(csPin, subAddress, &temp, 1);
-	return temp;
+	// uint8_t temp;
+	// // Use the multiple read function to read 1 byte. 
+	// // Value is returned to `temp`.
+	// SPIreadBytes(csPin, subAddress, &temp, 1);
+	// return temp;
+
+	return busDevice->readRegister(registerAddress);
+
 }
 
-void LSM9DS1::SPIreadBytes(uint8_t csPin, uint8_t subAddress,
-							uint8_t * dest, uint8_t count)
+void LSM9DS1::SPIreadBytes(uint8_t * dest, unsigned int count, unsigned int startAddress)
 {
-	// To indicate a read, set bit 0 (msb) of first byte to 1
-	uint8_t rAddress = 0x80 | (subAddress & 0x3F);
-	// Mag SPI port is different. If we're reading multiple bytes, 
-	// set bit 1 to 1. The remaining six bytes are the address to be read
-	if ((csPin == _mAddress) && count > 1)
-		rAddress |= 0x40;
+	// // To indicate a read, set bit 0 (msb) of first byte to 1
+	// uint8_t rAddress = 0x80 | (subAddress & 0x3F);
+	// // Mag SPI port is different. If we're reading multiple bytes, 
+	// // set bit 1 to 1. The remaining six bytes are the address to be read
+	// if ((csPin == _mAddress) && count > 1)
+	// 	rAddress |= 0x40;
 	
-	/*digitalWrite(csPin, LOW); // Initiate communication
-	SPI.transfer(rAddress);
-	for (int i=0; i<count; i++)
-	{
-		dest[i] = SPI.transfer(0x00); // Read into destination array
-	}
-	digitalWrite(csPin, HIGH); // Close communication*/
+	// /*digitalWrite(csPin, LOW); // Initiate communication
+	// SPI.transfer(rAddress);
+	// for (int i=0; i<count; i++)
+	// {
+	// 	dest[i] = SPI.transfer(0x00); // Read into destination array
+	// }
+	// digitalWrite(csPin, HIGH); // Close communication*/
+
+	dest = busDevice->readRegisters(count, startAddress);
+
 }
 
 //Return 0 on success 1 on failue to open the bus, 2 on failure to comunicate to the mag,
