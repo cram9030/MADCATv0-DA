@@ -178,8 +178,6 @@ uint16_t LSM9DS1::begin()
 	uint8_t mTest = mReadByte(WHO_AM_I_M);		// Read the gyro WHO_AM_I
 	uint8_t xgTest = xgReadByte(WHO_AM_I_XG);	// Read the accel/mag WHO_AM_I
 	uint16_t whoAmICombined = (xgTest << 8) | mTest;
-	cout << "mTest: " << hex << static_cast<int>(mTest) << endl;
-	cout << "xgTest: " << hex << static_cast<int>(xgTest) << endl;
 	
 	if (whoAmICombined != ((WHO_AM_I_AG_RSP << 8) | WHO_AM_I_M_RSP))
 		return 0;
