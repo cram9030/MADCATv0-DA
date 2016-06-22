@@ -1130,7 +1130,7 @@ void LSM9DS1::initSPI()
 	// Data is captured on rising edge of clock (CPHA = 0)
 	// Base value of the clock is HIGH (CPOL = 1)
 	SPI.setDataMode(SPI_MODE0);*/
-	busDevice = new SPIDevice(0,0);
+	busDevice = new SPIDevice(1,0);
 	busDevice->setSpeed(4000000);
 	busDevice->setMode(SPIDevice::MODE2);
 
