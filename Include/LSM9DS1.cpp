@@ -193,7 +193,7 @@ uint16_t LSM9DS1::begin()
 		if (whoAmICombined != ((WHO_AM_I_AG_RSP << 8) | WHO_AM_I_M_RSP))//Check to see if the who am I response is correct
 			return 0;
 	}
-	
+	cout << "Reading: " << hex << static_cast<int>(WHO_AM_I_XG) << " Value: " << hex << static_cast<int>(xgTest) << endl;
 	// Gyro initialization stuff:
 	initGyro();	// This will "turn on" the gyro. Setting up interrupts, etc.
 	
@@ -1177,22 +1177,15 @@ uint8_t LSM9DS1::SPIreadByte(uint8_t registerAddress)
 
 void LSM9DS1::SPIreadBytes(uint8_t * dest, unsigned int count, unsigned int startAddress)
 {
-	// // To indicate a read, set bit 0 (msb) of first byte to 1
-	// uint8_t rAddress = 0x80 | (subAddress & 0x3F);
-	// // Mag SPI port is different. If we're reading multiple bytes, 
-	// // set bit 1 to 1. The remaining six bytes are the address to be read
-	// if ((csPin == _mAddress) && count > 1)
-	// 	rAddress |= 0x40;
 	
-	// /*digitalWrite(csPin, LOW); // Initiate communication
-	// SPI.transfer(rAddress);
-	// for (int i=0; i<count; i++)
-	// {
-	// 	dest[i] = SPI.transfer(0x00); // Read into destination array
-	// }
-	// digitalWrite(csPin, HIGH); // Close communication*/
-
-	dest = busDevice->readRegisters(count, startAddress);
+	unsigned char* temp = new unsigned char[count]; // We'll read six bytes from the accelerometer into temp
+	temp = busDevice->readRegisters(count, startAddress);
+	for (int i=0; i<count; i++)
+	{
+		dest[i] = temp[i];
+		//cout << "Reading [" << i << "]: " << hex << static_cast<int>(temp[i]) << endl;
+	}
+	//dest = busDevice->readRegisters(count, startAddress);
 
 }
 

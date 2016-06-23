@@ -21,7 +21,7 @@ int main(){
 	// Data Storage Init //
 	///////////////////////
 	ofstream dataFile; //create file stream
-	dataFile.open ("accX&YGyroUpdate2Axis.txt"); //open text file
+	dataFile.open ("testing.txt"); //open text file
 	dataFile <<"Time,xAcc,yAcc,zAcc,xGyro,yGyro,zGyro,xMag,yMag,zMag"<<endl;//write colomn headers
 	
 	//////////////////////////
@@ -53,15 +53,22 @@ int main(){
 		cout << "Could not intialize IMU" << endl;
 	}
 	else{
+		//imu.readAccel();
+		//cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
 		while(1){
-			imu.readGyro();
-			//imu.read2GyroAxis(1);
-			//cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
-			imu.readAccel();
-			//imu.read2AccelAxis(1);
-			cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
-			//imu.readMag();
-			dataFile <<duration_cast<duration<double>>(high_resolution_clock::now() - t1).count()<<","<<imu.readAccel(X_AXIS)<<","<<imu.readAccel(Y_AXIS)<<","<<imu.az<<","<<imu.gx<<","<<imu.gy<<","<<imu.gz<<","<<imu.mx<<","<<imu.my<<","<<imu.mz<<endl;
+			if (imu.accelAvailable())
+			{
+				//imu.readGyro();
+				//imu.read2GyroAxis(1);
+				//cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
+				imu.readAccel();
+				//imu.read2AccelAxis(1);
+				//cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
+				cout << "Accel -> ax: " << imu.calcAccel(imu.readAccel(X_AXIS)) << " ay: " << imu.calcAccel(imu.readAccel(Y_AXIS)) << " az: " << imu.calcAccel(imu.readAccel(Z_AXIS)) << endl;
+				//imu.readMag();
+				//dataFile <<duration_cast<duration<double>>(high_resolution_clock::now() - t1).count()<<","<<imu.readAccel(X_AXIS)<<","<<imu.readAccel(Y_AXIS)<<","<<imu.az<<","<<imu.gx<<","<<imu.gy<<","<<imu.gz<<","<<imu.mx<<","<<imu.my<<","<<imu.mz<<endl;
+				std::this_thread::sleep_for (std::chrono::milliseconds(100));
+			}
 		}
 	}
 }

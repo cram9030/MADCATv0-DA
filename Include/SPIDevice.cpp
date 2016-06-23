@@ -114,8 +114,12 @@ unsigned char* SPIDevice::readRegisters(unsigned int number, unsigned int fromAd
 	unsigned char send[number+1], receive[number+1];
 	memset(send, 0, sizeof send);
 	send[0] =  (unsigned char) (0x80 + 0x40 + fromAddress); //set read bit and MB bit
+	send[0] = (unsigned char) 0x80 | (fromAddress & 0x3F);
 	this->transfer(send, receive, number+1);
 	memcpy(data, receive+1, number);  //ignore the first (address) byte in the array returned
+	for (int i=0; i<number; i++)
+	{
+	}
 	return data;
 }
 
