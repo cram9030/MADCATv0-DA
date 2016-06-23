@@ -105,7 +105,7 @@ unsigned char SPIDevice::readRegister(unsigned int registerAddress){
 	memset(receive, 0, sizeof receive);
 	send[0] = (unsigned char) (0x80 + registerAddress);
 	this->transfer(send, receive, 2);
-    //cout << "The value that was received is: " << (int) receive[1] << endl;
+	//cout << "The value that was received is: " << hex << static_cast<int>(receive[1]) << endl;
 	return receive[1];
 }
 

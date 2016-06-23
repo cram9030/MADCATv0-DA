@@ -174,12 +174,25 @@ uint16_t LSM9DS1::begin()
 		
 	// To verify communication, we can read from the WHO_AM_I register of
 	// each device. Store those in a variable so we can return them.
-	uint8_t mTest = mReadByte(WHO_AM_I_M);		// Read the gyro WHO_AM_I
-	uint8_t xgTest = xgReadByte(WHO_AM_I_XG);	// Read the accel/mag WHO_AM_I
-	uint16_t whoAmICombined = (xgTest << 8) | mTest;
-	
-	if (whoAmICombined != ((WHO_AM_I_AG_RSP << 8) | WHO_AM_I_M_RSP))
-		return 0;
+	uint8_t xgTest = xgReadByte(WHO_AM_I_XG);	// Read the accel/gyro WHO_AM_I
+	uint8_t mTest = mReadByte(WHO_AM_I_M);		// Read the mag WHO_AM_I
+	uint16_t whoAmICombined = 1;
+	if(settings.mag.enabled == false) //Check to see if the magnitormeter is going to be enabled
+	{
+		if (xgTest != WHO_AM_I_AG_RSP) //Check to see if the who am I response is correct
+			return 0;
+	}
+	else if(settings.gyro.enabled && settings.accel.enabled == false) //Check to see if the gyro and the accelerometer are turned off
+	{
+		if (mTest != WHO_AM_I_M_RSP)//Check to see if the who am I response is correct
+			return 0;
+	}
+	else
+	{
+		whoAmICombined = (xgTest << 8) | mTest;
+		if (whoAmICombined != ((WHO_AM_I_AG_RSP << 8) | WHO_AM_I_M_RSP))//Check to see if the who am I response is correct
+			return 0;
+	}
 	
 	// Gyro initialization stuff:
 	initGyro();	// This will "turn on" the gyro. Setting up interrupts, etc.
@@ -1131,9 +1144,7 @@ void LSM9DS1::initSPI()
 	// Base value of the clock is HIGH (CPOL = 1)
 	SPI.setDataMode(SPI_MODE0);*/
 	busDevice = new SPIDevice(1,0);
-	busDevice->setSpeed(4000000);
-	busDevice->setMode(SPIDevice::MODE2);
-
+	busDevice->setMode(SPIDevice::MODE0);
 }
 
 void LSM9DS1::SPIwriteByte(uint8_t regAddress, uint8_t value)
