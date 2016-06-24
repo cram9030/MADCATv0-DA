@@ -54,6 +54,7 @@ int main(){
 	}
 	else{
 		imu.readAccel();
+		cout << "Accel -> ax: " << imu.ax << " ay: " << imu.ay << " az: " << imu.az << endl;
 		cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
 		while(1){
 			imu.readGyro();

@@ -309,6 +309,7 @@ void LSM9DS1::initAccel()
 	{
 		tempRegValue |= (settings.accel.sampleRate & 0x07) << 5;
 	}
+	cout << "Settings Accel Scale: " << int(settings.accel.scale) <<endl;
 	switch (settings.accel.scale)
 	{
 		case 4:
@@ -327,7 +328,9 @@ void LSM9DS1::initAccel()
 		tempRegValue |= (1<<2); // Set BW_SCAL_ODR
 		tempRegValue |= (settings.accel.bandwidth & 0x03);
 	}
+	cout << "tempRegValue: " << hex << static_cast<int>(tempRegValue) << endl;
 	xgWriteByte(CTRL_REG6_XL, tempRegValue);
+	cout << "CTRL_REG6_XL: " << hex << static_cast<int>(xgReadByte(CTRL_REG6_XL)) << endl;
 	
 	// CTRL_REG7_XL (0x21) (Default value: 0x00)
 	// [HR][DCF1][DCF0][0][0][FDS][0][HPIS1]
