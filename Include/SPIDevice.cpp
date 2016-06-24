@@ -109,18 +109,18 @@ unsigned char SPIDevice::readRegister(unsigned int registerAddress){
 	return receive[1];
 }
 
-unsigned char* SPIDevice::readRegisters(unsigned int number, unsigned int fromAddress){
-	unsigned char* data = new unsigned char[number];
+void SPIDevice::readRegisters(unsigned int number, uint8_t * dest, unsigned int fromAddress){
 	unsigned char send[number+1], receive[number+1];
 	memset(send, 0, sizeof send);
 	send[0] =  (unsigned char) (0x80 + 0x40 + fromAddress); //set read bit and MB bit
 	send[0] = (unsigned char) 0x80 | (fromAddress & 0x3F);
 	this->transfer(send, receive, number+1);
-	memcpy(data, receive+1, number);  //ignore the first (address) byte in the array returned
-	for (int i=0; i<number; i++)
-	{
-	}
-	return data;
+	memcpy(dest, receive+1, number);  //ignore the first (address) byte in the array returned
+	//for (int i=0; i<number; i++)
+	//{
+		//cout << "Reading recieve[" << i << "]: " << hex << static_cast<int>(receive[i+1]) << endl;
+		//cout << "Reading data[" << i << "]: " << hex << static_cast<int>(dest[i]) << endl;
+	//}
 }
 
 int SPIDevice::write(unsigned char value){
