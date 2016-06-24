@@ -1179,7 +1179,7 @@ void LSM9DS1::SPIreadBytes(uint8_t * dest, unsigned int count, unsigned int star
 {
 	
 	unsigned char* temp = new unsigned char[count]; // We'll read six bytes from the accelerometer into temp
-	temp = busDevice->readRegisters(count, startAddress);
+	busDevice->readRegisters(count, dest, startAddress);
 	for (int i=0; i<count; i++)
 	{
 		dest[i] = temp[i];
