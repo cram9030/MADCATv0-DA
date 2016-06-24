@@ -109,18 +109,25 @@ unsigned char SPIDevice::readRegister(unsigned int registerAddress){
 	return receive[1];
 }
 
-void SPIDevice::readRegisters(unsigned int number, uint8_t * dest, unsigned int fromAddress){
-	unsigned char send[number+1], receive[number+1];
-	memset(send, 0, sizeof send);
-	send[0] =  (unsigned char) (0x80 + 0x40 + fromAddress); //set read bit and MB bit
-	send[0] = (unsigned char) 0x80 | (fromAddress & 0x3F);
-	this->transfer(send, receive, number+1);
-	memcpy(dest, receive+1, number);  //ignore the first (address) byte in the array returned
-	//for (int i=0; i<number; i++)
-	//{
-		//cout << "Reading recieve[" << i << "]: " << hex << static_cast<int>(receive[i+1]) << endl;
-		//cout << "Reading data[" << i << "]: " << hex << static_cast<int>(dest[i]) << endl;
+unsigned char* SPIDevice::readRegisters(unsigned int number, unsigned int fromAddress){
+	unsigned char* data = new unsigned char[number];
+	unsigned char send[2], receive[2];
+	//memset(send, 0, sizeof send);
+	//send[0] = (unsigned char) 0x80 | (fromAddress & 0x3F); //(0x80 + 0x40 + fromAddress); //set read bit and MB bit
+	//for(int i=0; i<number; i++){
+	//	this->transfer(send, receive, 2);
+	//	data[i] = receive[1];
+	//	cout << "The value that was received is: " << hex << static_cast<int>(receive[1]) << endl;
+	//	cout << "data: " << hex << static_cast<int>(data[i]) << endl;
 	//}
+	//memcpy(data, receive+1, number);  //ignore the first (address) byte in the array returned
+	
+	for(int i=0; i<number; i++)
+	{
+		data[i] = readRegister(fromAddress+i);
+	}
+	
+	return data;
 }
 
 int SPIDevice::write(unsigned char value){
