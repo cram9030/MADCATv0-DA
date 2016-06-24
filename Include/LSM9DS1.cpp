@@ -177,6 +177,9 @@ uint16_t LSM9DS1::begin()
 	uint8_t xgTest = xgReadByte(WHO_AM_I_XG);	// Read the accel/gyro WHO_AM_I
 	uint8_t mTest = mReadByte(WHO_AM_I_M);		// Read the mag WHO_AM_I
 	uint16_t whoAmICombined = 1;
+	cout << "Who am I XG: " << hex << static_cast<int>(xgTest) << endl;
+	cout << "Who am I m: " << hex << static_cast<int>(mTest) << endl;
+	//busDevice->debugDumpRegisters(WHO_AM_I_XG);
 	if(settings.mag.enabled == false) //Check to see if the magnitormeter is going to be enabled
 	{
 		if (xgTest != WHO_AM_I_AG_RSP) //Check to see if the who am I response is correct
@@ -1192,8 +1195,13 @@ void LSM9DS1::SPIreadBytes(uint8_t * dest, unsigned int count, unsigned int star
 	// }
 	// digitalWrite(csPin, HIGH); // Close communication*/
 
-	dest = busDevice->readRegisters(count, startAddress);
-
+	uint8_t *temp;
+	temp = busDevice->readRegisters(count, startAddress);
+	for(int i=0; i<count; i++)
+	{
+		 dest[i] = temp[i];
+	}
+	return;
 }
 
 //Return 0 on success 1 on failue to open the bus, 2 on failure to comunicate to the mag,
