@@ -1144,7 +1144,6 @@ void LSM9DS1::initSPI()
 	// Base value of the clock is HIGH (CPOL = 1)
 	SPI.setDataMode(SPI_MODE0);*/
 	busDevice = new SPIDevice(1,0);
-	busDevice->setSpeed(10000000);
 	busDevice->setMode(SPIDevice::MODE0);
 }
 
