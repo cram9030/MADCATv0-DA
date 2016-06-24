@@ -177,6 +177,7 @@ uint16_t LSM9DS1::begin()
 	uint8_t xgTest = xgReadByte(WHO_AM_I_XG);	// Read the accel/gyro WHO_AM_I
 	uint8_t mTest = mReadByte(WHO_AM_I_M);		// Read the mag WHO_AM_I
 	uint16_t whoAmICombined = 1;
+	busDevice.debugDumpRegisters(WHO_AM_I_XG);
 	if(settings.mag.enabled == false) //Check to see if the magnitormeter is going to be enabled
 	{
 		if (xgTest != WHO_AM_I_AG_RSP) //Check to see if the who am I response is correct
@@ -1177,14 +1178,14 @@ uint8_t LSM9DS1::SPIreadByte(uint8_t registerAddress)
 void LSM9DS1::SPIreadBytes(uint8_t * dest, unsigned int count, unsigned int startAddress)
 {
 	
-	unsigned char* temp = new unsigned char[count]; // We'll read six bytes from the accelerometer into temp
-	busDevice->readRegisters(count, dest, startAddress);
-	for (int i=0; i<count; i++)
-	{
-		dest[i] = temp[i];
+	//unsigned char* temp = new unsigned char[count]; // We'll read six bytes from the accelerometer into temp
+	//busDevice->readRegisters(count, dest, startAddress);
+	//for (int i=0; i<count; i++)
+	//{
+		//dest[i] = temp[i];
 		//cout << "Reading [" << i << "]: " << hex << static_cast<int>(temp[i]) << endl;
-	}
-	//dest = busDevice->readRegisters(count, startAddress);
+	//}
+	dest = busDevice->readRegisters(count, startAddress);
 
 }
 
