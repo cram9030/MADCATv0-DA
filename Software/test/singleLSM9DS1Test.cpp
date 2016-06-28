@@ -56,15 +56,17 @@ int main(){
 		imu.readAccel();
 		cout << "Accel -> ax: " << imu.ax << " ay: " << imu.ay << " az: " << imu.az << endl;
 		cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
-		while(1){
-			imu.readGyro();
+		cout << "Accel -> ax: " << imu.readAccel(X_AXIS) << " ay: " << imu.readAccel(Y_AXIS) << " az: " << imu.readAccel(Z_AXIS) << endl;
+		cout << "Accel -> ax: " << imu.calcAccel(imu.readAccel(X_AXIS)) << " ay: " << imu.calcAccel(imu.readAccel(Y_AXIS)) << " az: " << imu.calcAccel(imu.readAccel(Z_AXIS)) << endl;
+		//while(1){
+			//imu.readGyro();
 			//imu.read2GyroAxis(1);
-			cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
-			imu.readAccel();
+			//cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
+			//imu.readAccel();
 			//imu.read2AccelAxis(1);
-			cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
+			//cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
 			//imu.readMag();
 			//dataFile <<duration_cast<duration<double>>(high_resolution_clock::now() - t1).count()<<","<<imu.readAccel(X_AXIS)<<","<<imu.readAccel(Y_AXIS)<<","<<imu.az<<","<<imu.gx<<","<<imu.gy<<","<<imu.gz<<","<<imu.mx<<","<<imu.my<<","<<imu.mz<<endl;
-		}
+		//}
 	}
 }

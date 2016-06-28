@@ -177,6 +177,7 @@ uint16_t LSM9DS1::begin()
 	uint8_t xgTest = xgReadByte(WHO_AM_I_XG);	// Read the accel/gyro WHO_AM_I
 	uint8_t mTest = mReadByte(WHO_AM_I_M);		// Read the mag WHO_AM_I
 	uint16_t whoAmICombined = 1;
+	cout << "Reading: " << hex << static_cast<int>(WHO_AM_I_XG) << " Value: " << hex << static_cast<int>(xgTest) << endl;
 
 	if(settings.mag.enabled == false) //Check to see if the magnitormeter is going to be enabled
 	{
@@ -194,7 +195,6 @@ uint16_t LSM9DS1::begin()
 		if (whoAmICombined != ((WHO_AM_I_AG_RSP << 8) | WHO_AM_I_M_RSP))//Check to see if the who am I response is correct
 			return 0;
 	}
-	cout << "Reading: " << hex << static_cast<int>(WHO_AM_I_XG) << " Value: " << hex << static_cast<int>(xgTest) << endl;
 	// Gyro initialization stuff:
 	initGyro();	// This will "turn on" the gyro. Setting up interrupts, etc.
 	

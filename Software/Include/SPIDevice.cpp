@@ -52,7 +52,7 @@ SPIDevice::SPIDevice(unsigned int bus, unsigned int device):
 	stringstream s;
 	s << SPI_PATH << bus << "." << device;
 	this->filename = string(s.str());
-	this->mode = SPIDevice::MODE3;
+	this->mode = SPIDevice::MODE0;
 	this->bits = 8;
 	this->speed = 500000;
 	this->delay = 0;
