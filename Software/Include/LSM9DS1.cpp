@@ -179,8 +179,6 @@ uint16_t LSM9DS1::begin()
 	uint16_t whoAmICombined = 1;
 	cout << "Reading: " << hex << static_cast<int>(WHO_AM_I_XG) << " Value: " << hex << static_cast<int>(xgTest) << endl;
 
-	cout << "Reading: " << hex << static_cast<int>(WHO_AM_I_XG) << " Value: " << hex << static_cast<int>(xgTest) << endl;
-
 	if(settings.mag.enabled == false) //Check to see if the magnitormeter is going to be enabled
 	{
 		if (xgTest != WHO_AM_I_AG_RSP) //Check to see if the who am I response is correct
@@ -199,13 +197,24 @@ uint16_t LSM9DS1::begin()
 	}
 	
 	// Gyro initialization stuff:
-	initGyro();	// This will "turn on" the gyro. Setting up interrupts, etc.
+	if (settings.gyro.enabled)
+	{
+		initGyro();	// This will "turn on" the gyro. Setting up interrupts, etc.
+	}
 	
 	// Accelerometer initialization stuff:
-	initAccel(); // "Turn on" all axes of the accel. Set up interrupts, etc.
+	if (settings.accel.enabled)
+	{
+		initAccel(); // "Turn on" all axes of the accel. Set up interrupts, etc.	
+	}
 	
 	// Magnetometer initialization stuff:
-	initMag(); // "Turn on" all axes of the mag. Set up interrupts, etc.
+	if (settings.mag.enabled)
+	{
+		initMag(); // "Turn on" all axes of the mag. Set up interrupts, etc.
+	}
+	
+	xgWriteByte(CTRL_REG8,0x04);
 	
 	// Once everything is initialized, return the WHO_AM_I registers we read:
 	return whoAmICombined;
@@ -312,7 +321,7 @@ void LSM9DS1::initAccel()
 	{
 		tempRegValue |= (settings.accel.sampleRate & 0x07) << 5;
 	}
-	cout << "Settings Accel Scale: " << int(settings.accel.scale) <<endl;
+	
 	switch (settings.accel.scale)
 	{
 		case 4:
@@ -331,9 +340,8 @@ void LSM9DS1::initAccel()
 		tempRegValue |= (1<<2); // Set BW_SCAL_ODR
 		tempRegValue |= (settings.accel.bandwidth & 0x03);
 	}
-	cout << "tempRegValue: " << hex << static_cast<int>(tempRegValue) << endl;
+	
 	xgWriteByte(CTRL_REG6_XL, tempRegValue);
-	cout << "CTRL_REG6_XL: " << hex << static_cast<int>(xgReadByte(CTRL_REG6_XL)) << endl;
 	
 	// CTRL_REG7_XL (0x21) (Default value: 0x00)
 	// [HR][DCF1][DCF0][0][0][FDS][0][HPIS1]
