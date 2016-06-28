@@ -167,21 +167,35 @@ uint16_t LSM9DS1::begin()
 	}
 	else if (settings.device.commInterface == IMU_MODE_SPI) 	// else, if we're using SPI
 	{
-		//initSPI();	// Initialize SPI
-		cout << "SPI is not currently implemented please use I2C" << endl;
-		return 1;
+		initSPI();	// Initialize SPI
+		//cout << "SPI is not currently implemented please use I2C" << endl;
+		//return 1;
 	}
 		
 	// To verify communication, we can read from the WHO_AM_I register of
 	// each device. Store those in a variable so we can return them.
-	uint8_t mTest = mReadByte(WHO_AM_I_M);		// Read the gyro WHO_AM_I
-	uint8_t xgTest = xgReadByte(WHO_AM_I_XG);	// Read the accel/mag WHO_AM_I
-	uint16_t whoAmICombined = (xgTest << 8) | mTest;
-	cout << "mTest: " << hex << static_cast<int>(mTest) << endl;
-	cout << "xgTest: " << hex << static_cast<int>(xgTest) << endl;
-	
-	if (whoAmICombined != ((WHO_AM_I_AG_RSP << 8) | WHO_AM_I_M_RSP))
-		return 0;
+	uint8_t xgTest = xgReadByte(WHO_AM_I_XG);	// Read the accel/gyro WHO_AM_I
+	uint8_t mTest = mReadByte(WHO_AM_I_M);		// Read the mag WHO_AM_I
+	uint16_t whoAmICombined = 1;
+
+	cout << "Reading: " << hex << static_cast<int>(WHO_AM_I_XG) << " Value: " << hex << static_cast<int>(xgTest) << endl;
+
+	if(settings.mag.enabled == false) //Check to see if the magnitormeter is going to be enabled
+	{
+		if (xgTest != WHO_AM_I_AG_RSP) //Check to see if the who am I response is correct
+			return 0;
+	}
+	else if(settings.gyro.enabled && settings.accel.enabled == false) //Check to see if the gyro and the accelerometer are turned off
+	{
+		if (mTest != WHO_AM_I_M_RSP)//Check to see if the who am I response is correct
+			return 0;
+	}
+	else
+	{
+		whoAmICombined = (xgTest << 8) | mTest;
+		if (whoAmICombined != ((WHO_AM_I_AG_RSP << 8) | WHO_AM_I_M_RSP))//Check to see if the who am I response is correct
+			return 0;
+	}
 	
 	// Gyro initialization stuff:
 	initGyro();	// This will "turn on" the gyro. Setting up interrupts, etc.
@@ -297,6 +311,7 @@ void LSM9DS1::initAccel()
 	{
 		tempRegValue |= (settings.accel.sampleRate & 0x07) << 5;
 	}
+	cout << "Settings Accel Scale: " << int(settings.accel.scale) <<endl;
 	switch (settings.accel.scale)
 	{
 		case 4:
@@ -315,7 +330,9 @@ void LSM9DS1::initAccel()
 		tempRegValue |= (1<<2); // Set BW_SCAL_ODR
 		tempRegValue |= (settings.accel.bandwidth & 0x03);
 	}
+	cout << "tempRegValue: " << hex << static_cast<int>(tempRegValue) << endl;
 	xgWriteByte(CTRL_REG6_XL, tempRegValue);
+	cout << "CTRL_REG6_XL: " << hex << static_cast<int>(xgReadByte(CTRL_REG6_XL)) << endl;
 	
 	// CTRL_REG7_XL (0x21) (Default value: 0x00)
 	// [HR][DCF1][DCF0][0][0][FDS][0][HPIS1]
@@ -1060,7 +1077,7 @@ int LSM9DS1::xgWriteByte(uint8_t subAddress, uint8_t data)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		return I2CwriteByte(xgfile, subAddress, data);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		SPIwriteByte(_xgAddress, subAddress, data);
+		SPIwriteByte(/*_xgAddress, */subAddress, data);
 	else
 		return 0;
 }
@@ -1072,7 +1089,7 @@ int LSM9DS1::mWriteByte(uint8_t subAddress, uint8_t data)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		return I2CwriteByte(mfile, subAddress, data);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		SPIwriteByte(_mAddress, subAddress, data);
+		SPIwriteByte(/*_mAddress, */subAddress, data);
 	else
 		return 0;
 }
@@ -1084,7 +1101,7 @@ uint8_t LSM9DS1::xgReadByte(uint8_t subAddress)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		return I2CreadByte(xgfile, subAddress);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		return SPIreadByte(_xgAddress, subAddress);
+		return SPIreadByte(/*_xgAddress, */subAddress);
 }
 
 void LSM9DS1::xgReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count)
@@ -1094,7 +1111,7 @@ void LSM9DS1::xgReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		I2CreadBytes(xgfile, subAddress, dest, count);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		SPIreadBytes(_xgAddress, subAddress, dest, count);
+		SPIreadBytes(/*_xgAddress, */dest, count, subAddress);
 }
 
 uint8_t LSM9DS1::mReadByte(uint8_t subAddress)
@@ -1104,7 +1121,7 @@ uint8_t LSM9DS1::mReadByte(uint8_t subAddress)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		return I2CreadByte(mfile, subAddress);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		return SPIreadByte(_mAddress, subAddress);
+		return SPIreadByte(/*_mAddress, */subAddress);
 }
 
 void LSM9DS1::mReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count)
@@ -1114,7 +1131,7 @@ void LSM9DS1::mReadBytes(uint8_t subAddress, uint8_t * dest, uint8_t count)
 	if (settings.device.commInterface == IMU_MODE_I2C)
 		I2CreadBytes(mfile, subAddress, dest, count);
 	else if (settings.device.commInterface == IMU_MODE_SPI)
-		SPIreadBytes(_mAddress, subAddress, dest, count);
+		SPIreadBytes(/*_mAddress, */dest, count, subAddress);
 }
 
 void LSM9DS1::initSPI()
@@ -1132,9 +1149,11 @@ void LSM9DS1::initSPI()
 	// Data is captured on rising edge of clock (CPHA = 0)
 	// Base value of the clock is HIGH (CPOL = 1)
 	SPI.setDataMode(SPI_MODE0);*/
+	busDevice = new SPIDevice(1,0);
+	busDevice->setMode(SPIDevice::MODE0);
 }
 
-void LSM9DS1::SPIwriteByte(uint8_t csPin, uint8_t subAddress, uint8_t data)
+void LSM9DS1::SPIwriteByte(uint8_t regAddress, uint8_t value)
 {
 	/*digitalWrite(csPin, LOW); // Initiate communication
 	
@@ -1144,34 +1163,32 @@ void LSM9DS1::SPIwriteByte(uint8_t csPin, uint8_t subAddress, uint8_t data)
 	SPI.transfer(data); // Send data
 	
 	digitalWrite(csPin, HIGH); // Close communication*/
+
+	busDevice->writeRegister(regAddress, value);
+
 }
 
-uint8_t LSM9DS1::SPIreadByte(uint8_t csPin, uint8_t subAddress)
+uint8_t LSM9DS1::SPIreadByte(uint8_t registerAddress)
 {
-	uint8_t temp;
-	// Use the multiple read function to read 1 byte. 
-	// Value is returned to `temp`.
-	SPIreadBytes(csPin, subAddress, &temp, 1);
-	return temp;
+	// uint8_t temp;
+	// // Use the multiple read function to read 1 byte. 
+	// // Value is returned to `temp`.
+	// SPIreadBytes(csPin, subAddress, &temp, 1);
+	// return temp;
+
+	return busDevice->readRegister(registerAddress);
+
 }
 
-void LSM9DS1::SPIreadBytes(uint8_t csPin, uint8_t subAddress,
-							uint8_t * dest, uint8_t count)
+void LSM9DS1::SPIreadBytes(uint8_t * dest, unsigned int count, unsigned int startAddress)
 {
-	// To indicate a read, set bit 0 (msb) of first byte to 1
-	uint8_t rAddress = 0x80 | (subAddress & 0x3F);
-	// Mag SPI port is different. If we're reading multiple bytes, 
-	// set bit 1 to 1. The remaining six bytes are the address to be read
-	if ((csPin == _mAddress) && count > 1)
-		rAddress |= 0x40;
-	
-	/*digitalWrite(csPin, LOW); // Initiate communication
-	SPI.transfer(rAddress);
-	for (int i=0; i<count; i++)
+	uint8_t *temp;
+	temp = busDevice->readRegisters(count, startAddress);
+	for(int i=0; i<count; i++)
 	{
-		dest[i] = SPI.transfer(0x00); // Read into destination array
+		 dest[i] = temp[i];
 	}
-	digitalWrite(csPin, HIGH); // Close communication*/
+	return;
 }
 
 //Return 0 on success 1 on failue to open the bus, 2 on failure to comunicate to the mag,
