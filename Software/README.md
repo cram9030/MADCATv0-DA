@@ -19,16 +19,27 @@ The BB-SPI0-00A0.dts is a device tree file that can be found here http://elinux.
 
 #Hardware Setup
 LSM9DS1 Pin | BBB Pin
-1             3
-2             22
-3             3
-4             18
-5             21
-7             17
-8             3
-19            1
-20            1
-22            3
-23            3
+---------------------
+1           |  3
+
+2           |  22
+
+3           |  3
+
+4           |  18
+
+5           |  21
+
+7           |  17
+
+8           |  3
+
+19          |  1
+
+20          |  1
+
+22          |  3
+
+23          |  3
 
 Beaglebone Black pins 1 and 3 are ground and power respectively and they can simply be refrenced to the same ground if needed.
