@@ -118,7 +118,7 @@ int main() {
 	// 	return 1;
 	// }
 
-	if (!imu.begin()){
+	if (!imu.begin() && !imu.begin()){
 		cout << "Could not intialize IMU" << endl;
 	}else {
 		imu.readAccel();
@@ -132,6 +132,7 @@ int main() {
 				imu.readAccel();
 				//imu.read2AccelAxis(1);
 				cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
+				usleep(500000);
 				//myclock->streamWrite(GPIO::HIGH);
 				//usleep(250000);
 				//myclock->streamWrite(GPIO::LOW);
