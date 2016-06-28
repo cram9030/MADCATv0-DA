@@ -18,8 +18,9 @@ crw------- 1 root root 153, 0 Oct 16 04:12 /dev/spidev1.0
 The BB-SPI0-00A0.dts is a device tree file that can be found here http://elinux.org/images/1/1f/BB-SPI0-01-00A0.txt. Make sure to rename the extension to .dts. In order to have the SPI ports working at set up add echo BB-SPI0-01 > /sys/devices/bone_capemgr.*/slots" to ~/.profile.
 
 #Hardware Setup
+
 LSM9DS1 Pin | BBB Pin
----------------------
+
 1           |  3
 
 2           |  22
