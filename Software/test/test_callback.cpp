@@ -9,42 +9,16 @@
 using namespace std;
 using namespace std::chrono;
 
-GPIO *outGPIO, *myclock, *in2;
+GPIO *Datain, *firstLatchOut, *lastLatchOut;
 
 void *lookForEdge(void *value) {
-	GPIO *myGPIO = (GPIO *)value;
+	GPIO *lastLatch = (GPIO *)value;
 	while(1) {
-		myGPIO->waitForEdge();
-		outGPIO->streamWrite(GPIO::HIGH);
-		in2->waitForEdge();
-		outGPIO->streamWrite(GPIO::LOW);
+		lastLatch->waitForEdge();
+		Datain->streamWrite(GPIO::LOW);
+		firstLatchOut->waitForEdge();
+		Datain->streamWrite(GPIO::HIGH);
 	}
-}
-
-// void *lookForOtherEdge(void *value) {
-// 	GPIO *myGPIO = (GPIO *)value;
-// 	while(1) {
-// 		myGPIO->waitForEdge();
-// 		usleep(100000);
-// 		outGPIO->streamWrite(GPIO::LOW);
-// 	}
-// }
-
-int init(int num) {
-	int i;
-	for (i = 0; i < num; i++) {
-		myclock->streamWrite(GPIO::HIGH);
-		usleep(500000);
-		myclock->streamWrite(GPIO::LOW);
-		usleep(500000);
-	}
-	outGPIO->streamWrite(GPIO::HIGH);
-	usleep(10000);
-	myclock->streamWrite(GPIO::HIGH);
-	usleep(500000);
-	myclock->streamWrite(GPIO::LOW);
-	usleep(500000);
-	outGPIO->streamWrite(GPIO::LOW);
 }
 
 int main() {
@@ -53,21 +27,26 @@ int main() {
 		return -1;
 	}
 
-	int numberIMUS = 2;
+	Datain = new GPIO(49);
+	firstLatchOut = new GPIO(117);
+	lastLatchOut = new GPIO(115);
+	Datain->setDirection(GPIO::OUTPUT);
+	firstLatchOut->setDirection(GPIO::INPUT);
+	lastLatchOut->setDirection(GPIO::INPUT);
+	Datain->streamOpen();
+	firstLatchOut->setEdgeType(GPIO::FALLING);
+	lastLatchOut->setEdgeType(GPIO::FALLING);
+	Datain->streamWrite(GPIO::HIGH);
 
-	outGPIO = new GPIO(49);
-	//myclock = new GPIO(4);
-	outGPIO->setDirection(GPIO::OUTPUT);
-	//myclock->setDirection(GPIO::OUTPUT);
-	outGPIO->streamOpen();
-	//myclock->streamOpen();
-	outGPIO->streamWrite(GPIO::LOW);
-	//myclock->streamWrite(GPIO::LOW);
-	//init(numberIMUS);
-	//myclock->~GPIO();
-	in2 = new GPIO(117);
-	in2->setDirection(GPIO::INPUT);
-	in2->setEdgeType(GPIO::RISING);
+	cout << "Reset Flip Flops then press enter" << endl;
+	char temp;
+	cin >> temp;
+
+	pthread_t thread;
+	if(pthread_create(&thread, NULL, &lookForEdge, lastLatchOut)) {
+		cout << "Failed to create thread" << endl;
+		return 1;
+	}
 
 	///////////////////////
 	// Data Storage Init //
@@ -101,50 +80,19 @@ int main() {
 	//Set the inital time by creating a high resolution clock object
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-	// GPIO *inGPIO;
-	// inGPIO = new GPIO(115);
-	// inGPIO->setDirection(GPIO::INPUT);
-	// inGPIO->setEdgeType(GPIO::FALLING);
-	// pthread_t thread;
-	// if(pthread_create(&thread, NULL, &lookForEdge, inGPIO)) {
-	// 	cout << "Failed to create thread" << endl;
-	// 	return 1;
-	// }
-
-	
-	// pthread_t thread2;
-	// if(pthread_create(&thread2, NULL, &lookForOtherEdge, &in2)) {
-	// 	cout << "Failed to create other thread" << endl;
-	// 	return 1;
-	// }
-
 	if (!imu.begin() && !imu.begin()){
 		cout << "Could not intialize IMU" << endl;
 	}else {
 		imu.readAccel();
 		cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
 		while (1) {
-			//int i;
-			//for (i = 0; i < numberIMUS; i++) {
-				//imu.readGyro();
-				//imu.read2GyroAxis(1);
-				//cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
-				imu.readAccel();
-				//imu.read2AccelAxis(1);
-				cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
-				usleep(500000);
-				//myclock->streamWrite(GPIO::HIGH);
-				//usleep(250000);
-				//myclock->streamWrite(GPIO::LOW);
-				//usleep(250000);
-			//}
-			//outGPIO->streamWrite(GPIO::HIGH);
-			//usleep(10000);
-			//myclock->streamWrite(GPIO::HIGH);
-			//usleep(250000);
-			//myclock->streamWrite(GPIO::LOW);
-			//usleep(250000);
-			//outGPIO->streamWrite(GPIO::LOW);
+			//imu.readGyro();
+			//imu.read2GyroAxis(1);
+			//cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
+			imu.readAccel();
+			//imu.read2AccelAxis(1);
+			cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
+			usleep(500000);
 		}
 	}
 }
