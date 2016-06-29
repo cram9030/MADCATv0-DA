@@ -9,17 +9,17 @@
 using namespace std;
 using namespace std::chrono;
 
-GPIO *Datain, *firstLatchOut, *lastLatchOut;
+// GPIO *Datain, *firstLatchOut, *lastLatchOut;
 
-void *lookForEdge(void *value) {
-	GPIO *lastLatch = (GPIO *)value;
-	while(1) {
-		lastLatch->waitForEdge();
-		Datain->streamWrite(GPIO::LOW);
-		firstLatchOut->waitForEdge();
-		Datain->streamWrite(GPIO::HIGH);
-	}
-}
+// void *lookForEdge(void *value) {
+// 	GPIO *lastLatch = (GPIO *)value;
+// 	while(1) {
+// 		lastLatch->waitForEdge();
+// 		Datain->streamWrite(GPIO::LOW);
+// 		firstLatchOut->waitForEdge();
+// 		Datain->streamWrite(GPIO::HIGH);
+// 	}
+// }
 
 int main() {
 	if (getuid() != 0) {
@@ -27,26 +27,26 @@ int main() {
 		return -1;
 	}
 
-	Datain = new GPIO(49);
-	firstLatchOut = new GPIO(117);
-	lastLatchOut = new GPIO(115);
-	Datain->setDirection(GPIO::OUTPUT);
-	firstLatchOut->setDirection(GPIO::INPUT);
-	lastLatchOut->setDirection(GPIO::INPUT);
-	Datain->streamOpen();
-	firstLatchOut->setEdgeType(GPIO::FALLING);
-	lastLatchOut->setEdgeType(GPIO::FALLING);
-	Datain->streamWrite(GPIO::HIGH);
+	// Datain = new GPIO(49);
+	// firstLatchOut = new GPIO(117);
+	// lastLatchOut = new GPIO(115);
+	// Datain->setDirection(GPIO::OUTPUT);
+	// firstLatchOut->setDirection(GPIO::INPUT);
+	// lastLatchOut->setDirection(GPIO::INPUT);
+	// Datain->streamOpen();
+	// firstLatchOut->setEdgeType(GPIO::FALLING);
+	// lastLatchOut->setEdgeType(GPIO::FALLING);
+	// Datain->streamWrite(GPIO::HIGH);
 
 	cout << "Reset Flip Flops then press enter" << endl;
 	char temp;
 	cin >> temp;
 
-	pthread_t thread;
-	if(pthread_create(&thread, NULL, &lookForEdge, lastLatchOut)) {
-		cout << "Failed to create thread" << endl;
-		return 1;
-	}
+	// pthread_t thread;
+	// if(pthread_create(&thread, NULL, &lookForEdge, lastLatchOut)) {
+	// 	cout << "Failed to create thread" << endl;
+	// 	return 1;
+	// }
 
 	///////////////////////
 	// Data Storage Init //
@@ -80,9 +80,9 @@ int main() {
 	//Set the inital time by creating a high resolution clock object
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-	if (!imu.begin() && !imu.begin()){
-		cout << "Could not intialize IMU" << endl;
-	}else {
+	if (!imu.begin() && !imu.begin() && !imu.begin()){
+		cout << "Could not intialize IMU1" << endl;
+	} else {
 		imu.readAccel();
 		cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
 		while (1) {
