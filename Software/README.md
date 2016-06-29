@@ -10,10 +10,15 @@ The code Beaglebone SPI and I2C code was based off a combination of https://gith
 In order to use this code the Beaglebone Black Spi ports need to be intialized. This can be done by following these directions https://www.linux.com/learn/how-access-chips-over-spi-beaglebone-black which are also shown bellow. 
 
 root@beaglebone:~# dtc -O dtb -o BB-SPI0-01-00A0.dtbo -b 0 -@ BB-SPI0-01-00A0.dts
+
 root@beaglebone:~# cp BB-SPI0-01-00A0.dtbo /lib/firmware/
+
 root@beaglebone:~# echo BB-SPI0-01 > /sys/devices/bone_capemgr.*/slots
+
 root@beaglebone:~# ls -lh /dev/spi*
+
 crw------- 1 root root 153, 0 Oct 16 04:12 /dev/spidev1.0
+
 
 The BB-SPI0-00A0.dts is a device tree file that can be found here http://elinux.org/images/1/1f/BB-SPI0-01-00A0.txt. Make sure to rename the extension to .dts. In order to have the SPI ports working at set up add echo BB-SPI0-01 > /sys/devices/bone_capemgr.*/slots" to ~/.profile.
 
