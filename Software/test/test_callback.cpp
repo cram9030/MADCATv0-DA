@@ -80,8 +80,14 @@ int main() {
 	//Set the inital time by creating a high resolution clock object
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-	if (!imu.begin() && !imu.begin() && !imu.begin()){
-		cout << "Could not intialize IMU1" << endl;
+	if (!imu.begin()){
+		cout << "Could not intialize IMU" << endl;
+	} 
+	if (!imu.begin()){
+		cout << "Could not intialize IMU" << endl;
+	} 
+	if (!imu.begin()){
+		cout << "Could not intialize IMU" << endl;
 	} else {
 		imu.readAccel();
 		cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
