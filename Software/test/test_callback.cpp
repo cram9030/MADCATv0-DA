@@ -88,6 +88,9 @@ int main() {
 	} 
 	if (!imu.begin()){
 		cout << "Could not intialize IMU" << endl;
+	} 
+	if (!imu.begin()){
+		cout << "Could not intialize IMU" << endl;
 	} else {
 		imu.readAccel();
 		cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
@@ -98,7 +101,7 @@ int main() {
 			imu.readAccel();
 			//imu.read2AccelAxis(1);
 			cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
-			usleep(500000);
+			usleep(250000);
 		}
 	}
 }
