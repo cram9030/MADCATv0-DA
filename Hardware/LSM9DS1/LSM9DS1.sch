@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.2.0">
+<eagle version="7.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -2156,6 +2156,7 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <pinref part="JP2" gate="G$1" pin="5"/>
 <pinref part="JP3" gate="G$1" pin="5"/>
 <wire x1="149.86" y1="83.82" x2="165.1" y2="83.82" width="0.1524" layer="91"/>
+<label x="152.4" y="83.82" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$2" class="0">
@@ -2184,6 +2185,7 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <pinref part="JP2" gate="G$1" pin="4"/>
 <pinref part="JP3" gate="G$1" pin="4"/>
 <wire x1="149.86" y1="81.28" x2="165.1" y2="81.28" width="0.1524" layer="91"/>
+<label x="152.4" y="81.28" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="CS_A/G" class="0">
