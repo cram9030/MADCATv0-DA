@@ -1474,7 +1474,11 @@ This is a new untested footprint</description>
 </class>
 </classes>
 <parts>
-<part name="U$1" library="adafruit" deviceset="BEAGLEBONE_OUTLINE" device=""/>
+<part name="U$1" library="adafruit" deviceset="BEAGLEBONE_OUTLINE" device="">
+<attribute name="MF" value=""/>
+<attribute name="MPN" value=""/>
+<attribute name="OC_NEWARK" value="unknown"/>
+</part>
 <part name="JP2-SPI1" library="con-amp-quick" deviceset="M08" device=""/>
 <part name="JP3-SPI1" library="con-amp-quick" deviceset="M08" device=""/>
 <part name="GND1" library="supply1" deviceset="GND" device=""/>
@@ -1488,15 +1492,27 @@ This is a new untested footprint</description>
 <part name="SV2" library="con-lstb" deviceset="MA10-1" device=""/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
 <part name="P+2" library="supply1" deviceset="VCC" device=""/>
-<part name="U$2" library="MADCAT-BBB-Cape" deviceset="CL-SB-23B-01T" device="SMD"/>
-<part name="U$3" library="MADCAT-BBB-Cape" deviceset="CL-SB-23B-01T" device="SMD"/>
+<part name="U$2" library="MADCAT-BBB-Cape" deviceset="CL-SB-23B-01T" device="SMD">
+<attribute name="MF" value=""/>
+<attribute name="MPN" value=""/>
+<attribute name="OC_NEWARK" value="unknown"/>
+</part>
+<part name="U$3" library="MADCAT-BBB-Cape" deviceset="CL-SB-23B-01T" device="SMD">
+<attribute name="MF" value=""/>
+<attribute name="MPN" value=""/>
+<attribute name="OC_NEWARK" value="unknown"/>
+</part>
 </parts>
 <sheets>
 <sheet>
 <plain>
 </plain>
 <instances>
-<instance part="U$1" gate="G$1" x="-10.16" y="58.42"/>
+<instance part="U$1" gate="G$1" x="-10.16" y="58.42">
+<attribute name="OC_NEWARK" x="-10.16" y="58.42" size="1.778" layer="96" display="off"/>
+<attribute name="MF" x="-10.16" y="58.42" size="1.778" layer="96" display="off"/>
+<attribute name="MPN" x="-10.16" y="58.42" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="JP2-SPI1" gate="G$1" x="101.6" y="106.68" rot="MR0"/>
 <instance part="JP3-SPI1" gate="G$1" x="101.6" y="66.04" rot="MR0"/>
 <instance part="GND1" gate="1" x="68.58" y="50.8"/>
@@ -1510,8 +1526,16 @@ This is a new untested footprint</description>
 <instance part="SV2" gate="1" x="142.24" y="17.78" rot="MR0"/>
 <instance part="GND3" gate="1" x="109.22" y="0"/>
 <instance part="P+2" gate="VCC" x="114.3" y="0" rot="R180"/>
-<instance part="U$2" gate="G$1" x="50.8" y="106.68" rot="R270"/>
-<instance part="U$3" gate="G$1" x="50.8" y="66.04" rot="R90"/>
+<instance part="U$2" gate="G$1" x="50.8" y="106.68" rot="R270">
+<attribute name="OC_NEWARK" x="50.8" y="106.68" size="1.778" layer="96" display="off"/>
+<attribute name="MF" x="50.8" y="106.68" size="1.778" layer="96" display="off"/>
+<attribute name="MPN" x="50.8" y="106.68" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="U$3" gate="G$1" x="50.8" y="66.04" rot="R90">
+<attribute name="OC_NEWARK" x="50.8" y="66.04" size="1.778" layer="96" display="off"/>
+<attribute name="MF" x="50.8" y="66.04" size="1.778" layer="96" display="off"/>
+<attribute name="MPN" x="50.8" y="66.04" size="1.778" layer="96" display="off"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -1563,6 +1587,41 @@ This is a new untested footprint</description>
 <pinref part="GND3" gate="1" pin="GND"/>
 <wire x1="106.68" y1="10.16" x2="109.22" y2="10.16" width="0.1524" layer="91"/>
 <wire x1="109.22" y1="10.16" x2="109.22" y2="2.54" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="GND@7"/>
+<wire x1="-38.1" y1="119.38" x2="-48.26" y2="119.38" width="0.1524" layer="91"/>
+<label x="-48.26" y="119.38" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="GND@8"/>
+<wire x1="17.78" y1="119.38" x2="27.94" y2="119.38" width="0.1524" layer="91"/>
+<label x="22.86" y="119.38" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="GND@2"/>
+<wire x1="17.78" y1="53.34" x2="27.94" y2="53.34" width="0.1524" layer="91"/>
+<label x="22.86" y="53.34" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="GND@3"/>
+<wire x1="-38.1" y1="0" x2="-48.26" y2="0" width="0.1524" layer="91"/>
+<label x="-48.26" y="0" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="GND@4"/>
+<wire x1="-38.1" y1="-2.54" x2="-48.26" y2="-2.54" width="0.1524" layer="91"/>
+<label x="-48.26" y="-2.54" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="GND@5"/>
+<wire x1="17.78" y1="0" x2="27.94" y2="0" width="0.1524" layer="91"/>
+<label x="22.86" y="0" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="GND@6"/>
+<wire x1="17.78" y1="-2.54" x2="27.94" y2="-2.54" width="0.1524" layer="91"/>
+<label x="22.86" y="-2.54" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="VCC" class="0">
