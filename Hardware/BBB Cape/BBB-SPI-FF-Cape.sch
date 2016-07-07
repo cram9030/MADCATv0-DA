@@ -1683,17 +1683,14 @@ This is a new untested footprint</description>
 </net>
 <net name="CS" class="0">
 <segment>
-<pinref part="JP2-SPI1" gate="G$1" pin="7"/>
-<label x="91.44" y="114.3" size="1.778" layer="95"/>
-<wire x1="96.52" y1="114.3" x2="86.36" y2="114.3" width="0.1524" layer="91"/>
-<pinref part="U$2" gate="G$1" pin="P$7"/>
-<wire x1="86.36" y1="114.3" x2="86.36" y2="101.6" width="0.1524" layer="91"/>
-<wire x1="86.36" y1="101.6" x2="60.96" y2="101.6" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="U$1" gate="G$1" pin="I2C1_SCL"/>
 <wire x1="-38.1" y1="33.02" x2="-48.26" y2="33.02" width="0.1524" layer="91"/>
 <label x="-48.26" y="33.02" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="P$5"/>
+<wire x1="60.96" y1="114.3" x2="66.04" y2="114.3" width="0.1524" layer="91"/>
+<label x="60.96" y="114.3" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="SCL" class="0">
@@ -1754,6 +1751,16 @@ This is a new untested footprint</description>
 <pinref part="SV2" gate="1" pin="4"/>
 <wire x1="134.62" y1="15.24" x2="129.54" y2="15.24" width="0.1524" layer="91"/>
 <label x="129.54" y="15.24" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="FF-CLK" class="0">
+<segment>
+<pinref part="JP2-SPI1" gate="G$1" pin="7"/>
+<label x="88.9" y="114.3" size="1.778" layer="95"/>
+<pinref part="U$2" gate="G$1" pin="P$7"/>
+<wire x1="60.96" y1="101.6" x2="86.36" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="101.6" x2="86.36" y2="114.3" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="114.3" x2="96.52" y2="114.3" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
