@@ -9,7 +9,7 @@
 using namespace std;
 using namespace std::chrono;
 
-// GPIO *Datain, *firstLatchOut, *lastLatchOut;
+// GPIO *Datain, *myClock;
 
 // void *lookForEdge(void *value) {
 // 	GPIO *lastLatch = (GPIO *)value;
@@ -28,19 +28,20 @@ int main() {
 	}
 
 	// Datain = new GPIO(49);
-	// firstLatchOut = new GPIO(117);
+	// myClock = new GPIO(66);
 	// lastLatchOut = new GPIO(115);
 	// Datain->setDirection(GPIO::OUTPUT);
-	// firstLatchOut->setDirection(GPIO::INPUT);
+	// myClock->setDirection(GPIO::OUTPUT);
 	// lastLatchOut->setDirection(GPIO::INPUT);
 	// Datain->streamOpen();
-	// firstLatchOut->setEdgeType(GPIO::FALLING);
-	// lastLatchOut->setEdgeType(GPIO::FALLING);
+	// myClock->streamOpen();
 	// Datain->streamWrite(GPIO::HIGH);
+	// myClock->streamWrite(GPIO::HIGH);
+	// lastLatchOut->setEdgeType(GPIO::FALLING);
 
-	cout << "Reset Flip Flops then press enter" << endl;
-	char temp;
-	cin >> temp;
+	// cout << "Reset Flip Flops then press enter" << endl;
+	// char temp;
+	// cin >> temp;
 
 	// pthread_t thread;
 	// if(pthread_create(&thread, NULL, &lookForEdge, lastLatchOut)) {
@@ -53,7 +54,7 @@ int main() {
 	///////////////////////
 	ofstream dataFile; //create file stream
 	dataFile.open ("testing.txt"); //open text file
-	dataFile <<"IMU,Time,xAcc,yAcc"<<endl;//write colomn headers
+	dataFile <<"IMU,Time,xAcc,yAcc,xGyro,yGyro"<<endl;//write colomn headers
 	
 	//////////////////////////
 	// LSM9DS1 Library Init //
@@ -92,17 +93,44 @@ int main() {
 	} 
 	if (!imu.begin()){
 		cout << "Could not intialize IMU" << endl;
-	} else {
+	} 
+	if (!imu.begin()){
+		cout << "Could not intialize IMU" << endl;
+	} 
+	if (!imu.begin()){
+		cout << "Could not intialize IMU" << endl;
+	} 
+	if (!imu.begin()){
+		cout << "Could not intialize IMU" << endl;
+	} 
+	else {
 		//imu.readAccel();
 		// cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
+		int flag = 0;
 		while (1) {
 			//imu.readGyro();
 			//imu.read2GyroAxis(1);
 			//cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
 			//imu.readAccel();
-			imu.read2AccelAxis(1);
-			dataFile <<IMU_num % 4<<","<<duration_cast<duration<double>>(high_resolution_clock::now() - t1).count()<<","<<imu.ax<<","<<imu.ay<<endl;
-			IMU_num++;
+			if (!flag) {
+				imu.read2AccelAxis(1);
+				//cout << "IMU#: "<< IMU_num % 7<<" Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
+				//usleep(500000);
+				dataFile <<IMU_num % 7<<","<<duration_cast<duration<double>>(high_resolution_clock::now() - t1).count()<<","<<imu.ax<<","<<imu.ay<<","<<imu.gx<<","<<imu.gy<<endl;
+				IMU_num++;
+				if (IMU_num % 7 == 0) {
+					flag = 1;
+				}
+			} else {
+				imu.read2GyroAxis(1);
+				//cout << "IMU#: "<< IMU_num % 7<<" Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
+				//usleep(500000);
+				dataFile <<IMU_num % 7<<","<<duration_cast<duration<double>>(high_resolution_clock::now() - t1).count()<<","<<imu.ax<<","<<imu.ay<<","<<imu.gx<<","<<imu.gy<<endl;
+				IMU_num++;
+				if (IMU_num % 7 == 0) {
+					flag = 0;
+				}
+			}
 			//imu.read2AccelAxis(1);
 			//cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
 			//usleep(250000);
