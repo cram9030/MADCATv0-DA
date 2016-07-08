@@ -53,13 +53,14 @@ int main() {
 	///////////////////////
 	ofstream dataFile; //create file stream
 	dataFile.open ("testing.txt"); //open text file
-	dataFile <<"Time,xAcc,yAcc,zAcc,xGyro,yGyro,zGyro,xMag,yMag,zMag"<<endl;//write colomn headers
+	dataFile <<"IMU,Time,xAcc,yAcc"<<endl;//write colomn headers
 	
 	//////////////////////////
 	// LSM9DS1 Library Init //
 	//////////////////////////
 	// Use the LSM9DS1 class to create an object.
 	LSM9DS1 imu;
+	int IMU_num = 0;
 	
 	///////////////////////
 	// Example I2C Setup //
@@ -80,19 +81,31 @@ int main() {
 	//Set the inital time by creating a high resolution clock object
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-	if (!imu.begin() && !imu.begin() && !imu.begin()){
-		cout << "Could not intialize IMU1" << endl;
+	if (!imu.begin()){
+		cout << "Could not intialize IMU" << endl;
+	} 
+	if (!imu.begin()){
+		cout << "Could not intialize IMU" << endl;
+	} 
+	if (!imu.begin()){
+		cout << "Could not intialize IMU" << endl;
+	} 
+	if (!imu.begin()){
+		cout << "Could not intialize IMU" << endl;
 	} else {
-		imu.readAccel();
-		cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
+		//imu.readAccel();
+		// cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
 		while (1) {
 			//imu.readGyro();
 			//imu.read2GyroAxis(1);
 			//cout << "Gyro -> gx: " << imu.calcGyro(imu.gx) << " gy: " << imu.calcGyro(imu.gy) << " gz: " << imu.calcGyro(imu.gz) << endl;
-			imu.readAccel();
+			//imu.readAccel();
+			imu.read2AccelAxis(1);
+			dataFile <<IMU_num % 4<<","<<duration_cast<duration<double>>(high_resolution_clock::now() - t1).count()<<","<<imu.ax<<","<<imu.ay<<endl;
+			IMU_num++;
 			//imu.read2AccelAxis(1);
-			cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
-			usleep(500000);
+			//cout << "Accel -> ax: " << imu.calcAccel(imu.ax) << " ay: " << imu.calcAccel(imu.ay) << " az: " << imu.calcAccel(imu.az) << endl;
+			//usleep(250000);
 		}
 	}
 }
