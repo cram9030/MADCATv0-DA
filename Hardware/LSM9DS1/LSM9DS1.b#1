@@ -18,10 +18,10 @@
 <layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
@@ -144,6 +144,26 @@
 <wire x1="20.32" y1="0" x2="20.32" y2="12.954" width="0" layer="20"/>
 <wire x1="20.32" y1="12.954" x2="0" y2="12.954" width="0" layer="20"/>
 <wire x1="0" y1="12.954" x2="0" y2="0" width="0" layer="20"/>
+<wire x1="17.8562" y1="10.6426" x2="19.2786" y2="10.6426" width="0.1016" layer="21"/>
+<wire x1="19.2786" y1="10.6426" x2="19.0754" y2="10.8458" width="0.1016" layer="21"/>
+<wire x1="17.8562" y1="9.2202" x2="17.8562" y2="10.6426" width="0.1016" layer="21"/>
+<wire x1="18.0594" y1="9.4234" x2="17.8562" y2="9.2202" width="0.1016" layer="21"/>
+<wire x1="18.7198" y1="9.779" x2="18.7452" y2="9.7536" width="0.1016" layer="21"/>
+<wire x1="18.7452" y1="9.7536" x2="18.7198" y2="9.7282" width="0.1016" layer="21"/>
+<wire x1="18.7198" y1="9.7282" x2="18.6944" y2="9.7536" width="0.1016" layer="21"/>
+<wire x1="18.6944" y1="9.7536" x2="18.7198" y2="9.779" width="0.1016" layer="21"/>
+<wire x1="18.7452" y1="10.414" x2="18.7706" y2="10.8458" width="0.1016" layer="21" curve="-229.02199"/>
+<wire x1="18.7452" y1="10.414" x2="18.6436" y2="10.4902" width="0.1016" layer="21"/>
+<wire x1="18.7452" y1="10.414" x2="18.6944" y2="10.287" width="0.1016" layer="21"/>
+<wire x1="18.0594" y1="9.906" x2="17.653" y2="9.9568" width="0.1016" layer="21" curve="-229.02199"/>
+<wire x1="17.653" y1="9.9568" x2="17.526" y2="9.906" width="0.1016" layer="21"/>
+<wire x1="17.653" y1="9.9568" x2="17.7292" y2="9.8552" width="0.1016" layer="21"/>
+<wire x1="18.5928" y1="10.033" x2="18.5674" y2="9.4742" width="0.1016" layer="21" curve="-229.02199"/>
+<wire x1="18.5928" y1="10.033" x2="18.6944" y2="9.9568" width="0.1016" layer="21"/>
+<wire x1="18.5928" y1="10.033" x2="18.669" y2="10.16" width="0.1016" layer="21"/>
+<text x="19.5834" y="10.7188" size="0.508" layer="21" font="fixed" align="center">X</text>
+<text x="17.8562" y="8.89" size="0.508" layer="21" font="fixed" align="center">Y</text>
+<text x="19.177" y="9.2964" size="0.508" layer="21" font="fixed" align="center">Z</text>
 </plain>
 <libraries>
 <library name="SparkFun-Passives">
