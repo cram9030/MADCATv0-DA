@@ -147,6 +147,9 @@ void GPS_init(int argc, char *argv[]){
     tcflush(GPS_file, TCIFLUSH);
     tcsetattr(GPS_file,TCSANOW,&newtio);
  
+	if(write(GPS_file, "$PTNLSFS,H,0*38\r\n", 17)==17){
+		printf("High Sensitivity Mode Selected. \n\n Look for >>$PTNLRFS,A*2C<< for successful confirmation from device \n\n");
+	}
     //Check for user inputs between hot, warm, cold, or factory reset starts
     if(argc==2){
             if(!strcmp(argv[1],"hot")){
