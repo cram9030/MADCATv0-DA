@@ -80,7 +80,7 @@
 <layer number="111" name="LPC17xx" color="7" fill="1" visible="no" active="yes"/>
 <layer number="112" name="tSilk" color="7" fill="1" visible="no" active="yes"/>
 <layer number="113" name="IDFDebug" color="4" fill="1" visible="no" active="yes"/>
-<layer number="114" name="STIFFENER" color="13" fill="1" visible="yes" active="yes"/>
+<layer number="114" name="STIFFENER" color="13" fill="1" visible="no" active="yes"/>
 <layer number="115" name="ReferenceISLANDS" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="116" name="Patch_BOT" color="9" fill="4" visible="no" active="yes"/>
 <layer number="118" name="Rect_Pads" color="7" fill="1" visible="yes" active="yes"/>
@@ -157,18 +157,16 @@
 <wire x1="32.2" y1="25.2" x2="17.5" y2="25.2" width="0" layer="20"/>
 <wire x1="17.5" y1="13.1" x2="32.2" y2="13.1" width="0" layer="20"/>
 <wire x1="32.2" y1="13.1" x2="32.2" y2="17.5" width="0" layer="20"/>
-<wire x1="17.6" y1="25.2" x2="32.2" y2="25.2" width="0" layer="114"/>
+<wire x1="22.2" y1="25.2" x2="32.2" y2="25.2" width="0" layer="114"/>
 <wire x1="32.2" y1="25.2" x2="32.2" y2="20.9" width="0" layer="114"/>
-<wire x1="32.2" y1="17.3" x2="32.2" y2="13.1" width="0" layer="114"/>
-<wire x1="32.2" y1="13.1" x2="17.5" y2="13.1" width="0" layer="114"/>
+<wire x1="32.2" y1="17.3" x2="32.2" y2="14.2" width="0" layer="114"/>
+<wire x1="32.2" y1="14.2" x2="22.2" y2="14.2" width="0" layer="114"/>
 <wire x1="32.2" y1="20.9" x2="32.2" y2="17.3" width="0" layer="114" curve="180"/>
 <wire x1="17.5" y1="25.2" x2="17.5" y2="13.1" width="0" layer="20"/>
 <text x="21.4" y="23.3" size="1.778" layer="21" font="fixed">D</text>
 <text x="26.3" y="23.4" size="1.778" layer="21" font="fixed">Q</text>
 <text x="26.3" y="13.7" size="1.778" layer="21" font="fixed">Q</text>
 <text x="21.3" y="13.4" size="1.778" layer="21" font="fixed">D</text>
-<wire x1="17.6" y1="25.2" x2="17.5" y2="25.2" width="0" layer="114"/>
-<wire x1="17.5" y1="25.2" x2="17.5" y2="13.1" width="0" layer="114"/>
 </plain>
 <libraries>
 <library name="SparkFun-Passives">
@@ -565,7 +563,6 @@ design rules under a new name.</description>
 <wire x1="29.8" y1="23.6" x2="29.6" y2="23.8" width="0.325" layer="1"/>
 <wire x1="29.6" y1="23.8" x2="29.5" y2="23.9" width="0.325" layer="1"/>
 <via x="29.6" y="23.8" extent="1-16" drill="0.4"/>
-<via x="22.2" y="24" extent="1-16" drill="0.4"/>
 </signal>
 <signal name="3.3V">
 <contactref element="U$2" pad="1"/>
