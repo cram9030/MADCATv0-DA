@@ -2290,7 +2290,6 @@ Rebel - DIO-09553&lt;br&gt;
 <pinref part="JP2" gate="G$1" pin="5"/>
 <wire x1="149.86" y1="83.82" x2="165.1" y2="83.82" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="4"/>
-<label x="154.94" y="83.82" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$2" class="0">
@@ -2319,7 +2318,6 @@ Rebel - DIO-09553&lt;br&gt;
 <pinref part="JP2" gate="G$1" pin="4"/>
 <wire x1="149.86" y1="81.28" x2="165.1" y2="81.28" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="5"/>
-<label x="154.94" y="81.28" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="CS_A/G" class="0">
