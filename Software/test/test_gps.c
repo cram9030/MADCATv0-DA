@@ -147,6 +147,7 @@ void GPS_init(int argc, char *argv[]){
     tcflush(GPS_file, TCIFLUSH);
     tcsetattr(GPS_file,TCSANOW,&newtio);
  
+	//Initialize High Sensitivity Mode
 	if(write(GPS_file, "$PTNLSFS,H,0*38\r\n", 17)==17){
 		printf("High Sensitivity Mode Selected. \n\n Look for >>$PTNLRFS,A*2C<< for successful confirmation from device \n\n");
 	}
