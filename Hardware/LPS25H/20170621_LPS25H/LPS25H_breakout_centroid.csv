@@ -1,0 +1,16 @@
+Screaming Circuits SMD component position file.
+Created by Centroid_ScreamingCircuits_smd.ulp 1.2.0.
+
+Centroid Data for pc board: "LPS25H_breakout.brd" as of: 7/21/16 9:51 AM
+Measurements are in inches. Comma delimited
+Only surface mount components included
+
+RefDes,Layer,LocationX,LocationY,Rotation
+C1,Bottom,2.169,0.752,90
+C2,Bottom,2.224,0.752,90
+D1,Top,1.161,0.650,90
+J1,Top,1.047,0.752,90
+J2,Top,0.846,0.752,90
+R1,Top,1.161,0.598,0
+U$1,Top,1.157,0.929,90
+U$2,Top,2.197,0.752,0
