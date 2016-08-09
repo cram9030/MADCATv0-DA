@@ -146,7 +146,12 @@ void GPS_init(int argc, char *argv[]){
     newtio.c_lflag = ICANON;
     tcflush(GPS_file, TCIFLUSH);
     tcsetattr(GPS_file,TCSANOW,&newtio);
- 
+	
+	//Set Initial Postion
+	if(write(GPS_file, "PTNLSKG,1907,532415,38.760276,N,121.306913,W,46*59<CR><LF>\r\n",63)==63){
+		printf("Initial Location Set. \n\n");
+	}
+	
 	//Initialize High Sensitivity Mode
 	if(write(GPS_file, "$PTNLSFS,H,0*38\r\n", 17)==17){
 		printf("High Sensitivity Mode Selected. \n\n Look for >>$PTNLRFS,A*2C<< for successful confirmation from device \n\n");
