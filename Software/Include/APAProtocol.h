@@ -4,7 +4,7 @@
 
 // ******************************************************************************************
 // INCLUDED LIBRARIES
-#include "pyhsicalAPA.h"
+#include "physicalLayer.h"
 
 // ******************************************************************************************
 // DEFINITIONS
@@ -23,26 +23,31 @@
 
 #define readusDelay 10 // delay betefore reading bit
 
+// ******************************************************************************************
+// STRCUT DEFINITIONS
 
+struct apaPortType {
+			unsigned char pathIn[apa_max_packet];
+			unsigned char pathOut[apa_max_packet];
+			unsigned char pathInLength, pathOutLength;
+			unsigned char payloadIn[apa_max_packet];
+			unsigned char payloadOut[apa_max_packet];
+			unsigned char payloadInLength, payLoadOutLength;
+			char destination;
+			char id;
+			struct apaPortType *nextPort;
+			unsigned char packet[2*apa_max_packet+3];
+			physicalLayer device;
+			apaPortType():id(0),device(0){};
+		};
+		
 // ******************************************************************************************
 // CLASS DEFINITIONS
 
 class apaProtocol {
 	
 	public:
-		struct apaPortType {
-		   unsigned char pathIn[apa_max_packet];
-		   unsigned char pathOut[apa_max_packet];
-		   unsigned char pathInLength, pathOutLength;
-		   unsigned char payloadIn[apa_max_packet];
-		   unsigned char payloadOut[apa_max_packet];
-		   unsigned char payloadInLength, payLoadOutLength;
-		   char destination;
-		   char id;
-		   struct apaPortType *nextPort;
-		   unsigned char packet[2*apa_max_packet+3];
-		   physicalLayer device;
-		   };
+		apaPortType apaPort;
 		unsigned char apaProcessPacket(struct apaPortType *port);
 		void apaMovePacket(struct apaPortType *port0, struct apaPortType *port1);
 		void apaCopyPacket(struct apaPortType *port0, struct apaPortType *port1);
@@ -52,4 +57,4 @@ class apaProtocol {
 		void apaPutPacket(struct apaPortType *port);
 		void apaProtScan(struct apaPortType *port);
 		apaProtocol(char);
-}
+};

@@ -1,8 +1,10 @@
 // ******************************************************************************************
 // INCLUDED LIBRARIES
-#include "APAProtocol.h"
+#include <iostream>
+#include <unistd.h>
+#include "../Include/APAProtocol.h"
 
 int main(){
-	apaProtocol port0;
-	apaProtocol port1;
+	apaProtocol port0(0);
+	apaProtocol port1(1);
 }

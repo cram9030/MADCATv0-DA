@@ -1,24 +1,55 @@
+/*
+ * GPIO.cpp  Created on: 29 Apr 2014
+ * Copyright (c) 2014 Derek Molloy (www.derekmolloy.ie)
+ * Made available for the book "Exploring BeagleBone"
+ * If you use this code in your work please cite:
+ *   Derek Molloy, "Exploring BeagleBone: Tools and Techniques for Building
+ *   with Embedded Linux", Wiley, 2014, ISBN:9781118935125.
+ * See: www.exploringbeaglebone.com
+ * Licensed under the EUPL V.1.1
+ *
+ * This Software is provided to You under the terms of the European
+ * Union Public License (the "EUPL") version 1.1 as published by the
+ * European Union. Any use of this Software, other than as authorized
+ * under this License is strictly prohibited (to the extent such use
+ * is covered by a right of the copyright holder of this Software).
+ *
+ * This Software is provided under the License on an "AS IS" basis and
+ * without warranties of any kind concerning the Software, including
+ * without limitation merchantability, fitness for a particular purpose,
+ * absence of defects or errors, accuracy, and non-infringement of
+ * intellectual property rights other than copyright. This disclaimer
+ * of warranty is an essential part of the License and a condition for
+ * the grant of any rights to this Software.
+ *
+ * For more details, see http://www.derekmolloy.ie/
+ */
+
 #include "GPIO.h"
-#include "util.h"
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <cstdlib>
-#include <cstdio>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/epoll.h>
-#include <pthread.h>
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<sstream>
+#include<cstdlib>
+#include<cstdio>
+#include<fcntl.h>
+#include<unistd.h>
+#include<sys/epoll.h>
+#include<pthread.h>
 using namespace std;
 
+namespace exploringBB {
+
+/**
+ *
+ * @param number The GPIO number for the BBB
+ */
 GPIO::GPIO(int number) {
 	this->number = number;
 	this->debounceTime = 0;
-	this->togglePeriod = 100;
-	this->toggleNumber = -1;
+	this->togglePeriod=100;
+	this->toggleNumber=-1; //infinite number
 	this->callbackFunction = NULL;
-	this->thread = NULL;
 	this->threadRunning = false;
 
 	ostringstream s;
@@ -26,74 +57,105 @@ GPIO::GPIO(int number) {
 	this->name = string(s.str());
 	this->path = GPIO_PATH + this->name + "/";
 	this->exportGPIO();
-	usleep(250000);
+	// need to give Linux time to set up the sysfs structure
+	usleep(250000); // 250ms delay
 }
 
-int GPIO::exportGPIO() {
-	return write(GPIO_PATH, "export", this->number);
+int GPIO::write(string path, string filename, string value){
+   ofstream fs;
+   fs.open((path + filename).c_str());
+   if (!fs.is_open()){
+	   perror("GPIO: write failed to open file ");
+	   return -1;
+   }
+   fs << value;
+   fs.close();
+   return 0;
 }
 
-int GPIO::unexportGPIO() {
-	return write(GPIO_PATH, "unexport", this->number);
+string GPIO::read(string path, string filename){
+   ifstream fs;
+   fs.open((path + filename).c_str());
+   if (!fs.is_open()){
+	   perror("GPIO: read failed to open file ");
+    }
+   string input;
+   getline(fs,input);
+   fs.close();
+   return input;
 }
 
-int GPIO::setDirection(GPIO::DIRECTION dir) {
-	switch(dir){
-	case INPUT: return write(this->path, "direction", "in");
-		break;
-	case OUTPUT: return write(this->path, "direction", "out");
-		break;
-	}
-	return -1;
+int GPIO::write(string path, string filename, int value){
+   stringstream s;
+   s << value;
+   return this->write(path,filename,s.str());
 }
 
-int GPIO::setValue(GPIO::VALUE value){
-   switch(value){
-   case HIGH: return write(this->path, "value", "1");
+int GPIO::exportGPIO(){
+   return this->write(GPIO_PATH, "export", this->number);
+}
+
+int GPIO::unexportGPIO(){
+   return this->write(GPIO_PATH, "unexport", this->number);
+}
+
+int GPIO::setDirection(GPIO_DIRECTION dir){
+   switch(dir){
+   case INPUT: return this->write(this->path, "direction", "in");
       break;
-   case LOW: return write(this->path, "value", "0");
+   case OUTPUT:return this->write(this->path, "direction", "out");
       break;
    }
    return -1;
 }
 
-int GPIO::setEdgeType(GPIO::EDGE value){
+int GPIO::setValue(GPIO_VALUE value){
    switch(value){
-   case NONE: return write(this->path, "edge", "none");
+   case HIGH: return this->write(this->path, "value", "1");
       break;
-   case RISING: return write(this->path, "edge", "rising");
+   case LOW: return this->write(this->path, "value", "0");
       break;
-   case FALLING: return write(this->path, "edge", "falling");
+   }
+   return -1;
+}
+
+int GPIO::setEdgeType(GPIO_EDGE value){
+   switch(value){
+   case NONE: return this->write(this->path, "edge", "none");
       break;
-   case BOTH: return write(this->path, "edge", "both");
+   case RISING: return this->write(this->path, "edge", "rising");
+      break;
+   case FALLING: return this->write(this->path, "edge", "falling");
+      break;
+   case BOTH: return this->write(this->path, "edge", "both");
       break;
    }
    return -1;
 }
 
 int GPIO::setActiveLow(bool isLow){
-   if(isLow) return write(this->path, "active_low", "1");
-   else return write(this->path, "active_low", "0");
+   if(isLow) return this->write(this->path, "active_low", "1");
+   else return this->write(this->path, "active_low", "0");
 }
 
 int GPIO::setActiveHigh(){
    return this->setActiveLow(false);
 }
 
-GPIO::VALUE GPIO::getValue(){
-	string input = read(this->path, "value");
+GPIO_VALUE GPIO::getValue(){
+	string input = this->read(this->path, "value");
 	if (input == "0") return LOW;
 	else return HIGH;
 }
 
-GPIO::DIRECTION GPIO::getDirection(){
-	string input = read(this->path, "direction");
+GPIO_DIRECTION GPIO::getDirection(){
+	string input = this->read(this->path, "direction");
 	if (input == "in") return INPUT;
 	else return OUTPUT;
 }
 
-GPIO::EDGE GPIO::getEdgeType(){
-	string input = read(this->path, "edge");
+GPIO_EDGE GPIO::getEdgeType(){
+	string input = this->read(this->path, "edge");
 	if (input == "rising") return RISING;
 	else if (input == "falling") return FALLING;
 	else if (input == "both") return BOTH;
@@ -104,7 +166,7 @@ int GPIO::streamOpen(){
 	stream.open((path + "value").c_str());
 	return 0;
 }
-int GPIO::streamWrite(GPIO::VALUE value){
+int GPIO::streamWrite(GPIO_VALUE value){
 	stream << value << std::flush;
 	return 0;
 }
@@ -139,8 +201,8 @@ void* threadedToggle(void *value){
 	GPIO *gpio = static_cast<GPIO*>(value);
 	bool isHigh = (bool) gpio->getValue(); //find current value
 	while(gpio->threadRunning){
-		if (isHigh)	gpio->setValue(GPIO::HIGH);
-		else gpio->setValue(GPIO::LOW);
+		if (isHigh)	gpio->setValue(HIGH);
+		else gpio->setValue(LOW);
 		usleep(gpio->togglePeriod * 500);
 		isHigh=!isHigh;
 		if(gpio->toggleNumber>0) gpio->toggleNumber--;
@@ -213,3 +275,5 @@ int GPIO::waitForEdge(CallbackType callback){
 GPIO::~GPIO() {
 	this->unexportGPIO();
 }
+
+} /* namespace exploringBB */

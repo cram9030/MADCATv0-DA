@@ -6,17 +6,35 @@
 #include "physicalLayer.h"
 
 // ******************************************************************************************
+// NAMESPACE
+using namespace exploringBB;
+
+// ******************************************************************************************
 // DEFINITIONS
 #define pinIn 79
 #define pinOut 77
 
+#define apa_max_packet 10 // maximum path and payload size
+#define apa_timeout 255 // timeout loop count
+
+#define apa_start '{' // packet start
+#define apa_pointer '^' // packet path pointer
+#define apa_divider '|' // packet payload divider
+#define apa_end '}' // packet end
+#define apa_escape '\\' // packet end escape
+
+#define apa_flood 'F' // flood destination
+#define apa_here 'Z' // terminal destination
+
+#define readusDelay 10 // delay betefore reading bit
+
 // ******************************************************************************************
 // FUNCTIONS
 
-//bBBDIOApa constructor
-void bBBDIOApa::init(char pins){
-	GPIO inGPIO(pinIn);
-	GPIO outGPIO(pinOut);
+//physicalLayer constructor
+physicalLayer::physicalLayer(char pins)
+	:inGPIO(pinIn),outGPIO(pinOut)
+{
 	inGPIO.setDirection(INPUT);
 	inGPIO.setEdgeType(RISING);
 	outGPIO.setDirection(OUTPUT);
@@ -28,7 +46,7 @@ void bBBDIOApa::init(char pins){
 // input - apaPortType
 // output - 0 if everything worked and 1 if something failed
 //////////////////////////////////////////////////////////////////////
-char bBBDIOApa::apaPutChar(char c, unsigned char *returnValue){
+char physicalLayer::apaPutChar(char c, unsigned char *returnValue){
 	// Start a clock reading
 	// Set Ready Pin
 	outGPIO.setValue(HIGH);
@@ -202,7 +220,7 @@ char bBBDIOApa::apaPutChar(char c, unsigned char *returnValue){
 // input - apaPortType
 // output - 0 if everything worked and 1 if something failed
 //////////////////////////////////////////////////////////////////////
-char apaGetChar(char *c, unsigned char *returnValue){
+char physicalLayer::apaGetChar(char *c, unsigned char *returnValue){
 	// Initialize the character
 	*c = 0;
 	
@@ -311,7 +329,7 @@ char apaGetChar(char *c, unsigned char *returnValue){
 // output - returns pathInLength
 // calls - apaGetChar
 //////////////////////////////////////////////////////////////////////
-char apaGetPacket(unsigned char *packet){
+char physicalLayer::apaGetPacket(unsigned char *packet){
 	// Initialize characters, returnValue, and count
 	char c,index;
 	unsigned char returnValue,count;
@@ -340,7 +358,7 @@ char apaGetPacket(unsigned char *packet){
 	// Set count to timeout
 	count = apa_timeout;
 	// Collect the rest of the packet
-	while(c != apa_stop){
+	while(c != apa_end){
 		// Get character
 		apaGetChar(&c,&returnValue);
 		count -= 1;
@@ -382,7 +400,7 @@ char apaGetPacket(unsigned char *packet){
 // output - returns 0 if successful and 1 if failure
 // calls - apaPutChar
 //////////////////////////////////////////////////////////////////////
-char apaPutPacket(unsigned char *pathOut, unsigned char *payLoadOut, ,unsigned char *pathOutLength,unsigned char *payloadOutLength){
+char physicalLayer::apaPutPacket(unsigned char *pathOut, unsigned char *payLoadOut, unsigned char &pathOutLength,unsigned char &payloadOutLength){
 	// Initialize variables
 	unsigned char i;
 	char c;
@@ -409,7 +427,7 @@ char apaPutPacket(unsigned char *pathOut, unsigned char *payLoadOut, ,unsigned c
 	}
 	
 	//Put Payload
-	for (i = 0; i < payLoadLength, ++i){
+	for (i = 0; i < payloadOutLength; ++i){
 		// Get next char
 		c = payLoadOut[i];
 		
@@ -432,5 +450,5 @@ char apaPutPacket(unsigned char *pathOut, unsigned char *payLoadOut, ,unsigned c
 	if (returnValue == 0){
 		return 1;
 	}
-	payloadOutLegth = 0;
+	payloadOutLength = 0;
 }
