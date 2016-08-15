@@ -32,7 +32,7 @@ using namespace exploringBB;
 // FUNCTIONS
 
 //physicalLayer constructor
-physicalLayer::physicalLayer(char pins)
+physicalLayer::physicalLayer(char id)
 	:inGPIO(pinIn),outGPIO(pinOut)
 {
 	inGPIO.setDirection(INPUT);

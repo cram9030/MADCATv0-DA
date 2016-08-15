@@ -39,8 +39,7 @@ struct apaPortType {
 			unsigned char packet[2*apa_max_packet+3];
 			physicalLayer device;
 			apaPortType():id(0),device(0){};
-		};
-		
+	};
 // ******************************************************************************************
 // CLASS DEFINITIONS
 
