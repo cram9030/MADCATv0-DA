@@ -38,7 +38,7 @@ struct apaPortType {
 			struct apaPortType *nextPort;
 			unsigned char packet[2*apa_max_packet+3];
 			physicalLayer device;
-			apaPortType():id(0),device(0){};
+			apaPortType(char val):id(val),device(val){};
 	};
 // ******************************************************************************************
 // CLASS DEFINITIONS
@@ -52,8 +52,8 @@ class apaProtocol {
 		void apaCopyPacket(struct apaPortType *port0, struct apaPortType *port1);
 		void apaRoutePacket(struct apaPortType *port);
 		void apaReversePath(struct apaPortType *port);
-		void apaGetPacket(struct apaPortType *port);
-		void apaPutPacket(struct apaPortType *port);
+		char apaGetPacket(struct apaPortType *port);
+		char apaPutPacket(struct apaPortType *port);
 		void apaProtScan(struct apaPortType *port);
 		apaProtocol(char);
 };

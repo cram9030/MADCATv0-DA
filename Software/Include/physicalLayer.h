@@ -20,7 +20,7 @@ class physicalLayer {
 	public:
 		char apaGetPacket(unsigned char packet[]);
 		char apaPutPacket(unsigned char pathOut[],unsigned char payLoadOut[],unsigned char &pathOutLength,unsigned char &payloadOutLength);
-		physicalLayer(char,char);
+		physicalLayer(char);
 	private:
 		GPIO inGPIO;
 		GPIO outGPIO;

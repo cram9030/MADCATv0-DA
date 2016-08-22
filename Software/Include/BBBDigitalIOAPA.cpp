@@ -35,6 +35,10 @@ using namespace exploringBB;
 physicalLayer::physicalLayer(char id)
 	:inGPIO(pinIn),outGPIO(pinOut)
 {
+	if (id != 0){
+		GPIO inGPIO(75);
+		GPIO outGPIO(73);
+	}
 	inGPIO.setDirection(INPUT);
 	inGPIO.setEdgeType(RISING);
 	outGPIO.setDirection(OUTPUT);

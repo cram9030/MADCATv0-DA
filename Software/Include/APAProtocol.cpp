@@ -9,8 +9,11 @@
 #include "APAProtocol.h"
 
 // apaProtocol class constructor
-apaProtocol::apaProtocol(char id){
-	//apaPortType apaPort;
+apaProtocol::apaProtocol(char id):apaPort(0){
+
+	if (id != 0){
+		apaPortType apaPort(id);
+	}
 	apaPort.id = id;
 	apaPort.pathInLength = 0;
 	apaPort.pathOutLength = 0;
@@ -106,7 +109,7 @@ unsigned char apaProtocol::apaProcessPacket(struct apaPortType *port){
 //							deletes the previous packet
 // input - apaPortType, apaPortType
 //////////////////////////////////////////////////////////////////////
-void apaMovePacket(struct apaPortType *port0, struct apaPortType *port1){
+void apaProtocol::apaMovePacket(struct apaPortType *port0, struct apaPortType *port1){
 	unsigned char i;
 	
 	// Copy the input path of port 0 to the output path of port 1
@@ -133,7 +136,7 @@ void apaMovePacket(struct apaPortType *port0, struct apaPortType *port1){
 // 							input of port 0 to the output of port 1
 // input - apaPortType, apaPortType
 //////////////////////////////////////////////////////////////////////
-void apaCopyPacket(struct apaPortType *port0, struct apaPortType *port1){
+void apaProtocol::apaCopyPacket(struct apaPortType *port0, struct apaPortType *port1){
 	unsigned char i;
 	
 	// Copy the input path of port 0 to the output path of port 1
@@ -156,7 +159,7 @@ void apaCopyPacket(struct apaPortType *port0, struct apaPortType *port1){
 //							pathing or the next port
 // input - apaPortType
 //////////////////////////////////////////////////////////////////////
-void apaRoutePacket(struct apaPortType *port){
+void apaProtocol::apaRoutePacket(struct apaPortType *port){
 	static unsigned char ptr;
 	
 	// Initialize APA pointer to zero
@@ -186,7 +189,7 @@ void apaRoutePacket(struct apaPortType *port){
 //							allowing pathing back to the source
 // input - apaPortType
 //////////////////////////////////////////////////////////////////////
-void apaReversePath(struct apaPortType *port) {
+void apaProtocol::apaReversePath(struct apaPortType *port) {
    static unsigned char i;
    static unsigned char temp[apa_max_packet];
    
@@ -205,7 +208,7 @@ void apaReversePath(struct apaPortType *port) {
 //							packet
 // input - apaPortType
 //////////////////////////////////////////////////////////////////////
-char apaGetPacket(struct apaPortType *port){
+char apaProtocol::apaGetPacket(struct apaPortType *port){
 	return port->device.apaGetPacket(port->packet);
 }
 
@@ -214,7 +217,7 @@ char apaGetPacket(struct apaPortType *port){
 //							physical layer
 // input - apaPortType
 //////////////////////////////////////////////////////////////////////
-char apaPutPacket(struct apaPortType *port){
+char apaProtocol::apaPutPacket(struct apaPortType *port){
 	return port->device.apaPutPacket(port->pathOut,port->payloadOut,port->pathOutLength,port->payLoadOutLength);
 }
 
@@ -223,7 +226,7 @@ char apaPutPacket(struct apaPortType *port){
 //							routes recieve packet 
 // input - apaPortType
 //////////////////////////////////////////////////////////////////////
-void apaProtScan(struct apaPortType *port){
+void apaProtocol::apaProtScan(struct apaPortType *port){
 	// Create current port
 	struct apaPortType *currentPort;
 	
