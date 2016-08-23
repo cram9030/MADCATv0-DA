@@ -14,7 +14,6 @@ int main(int argc, char *argv[]){
 	port0.apaPort.nextPort = &port1.apaPort;
 	port1.apaPort.nextPort = &port0.apaPort;
 	
-	cout<< argv[1] <<endl;
 	port0.apaPort.packet[0] = '{';
 	port0.apaPort.packet[1] = '1';
 	port0.apaPort.packet[2] = '^';
@@ -25,5 +24,6 @@ int main(int argc, char *argv[]){
 	if(port1.apaPutPacket(&port1.apaPort) != 0)
 	{
 		while(port1.apaGetPacket(&port1.apaPort) == 0){}
+		cout << port1.apaPort.packet << endl;
 	}
 }

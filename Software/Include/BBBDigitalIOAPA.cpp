@@ -4,15 +4,17 @@
 // ******************************************************************************************
 // INCLUDED LIBRARIES
 #include "physicalLayer.h"
+#include <iostream>
 
 // ******************************************************************************************
 // NAMESPACE
 using namespace exploringBB;
+using namespace std;
 
 // ******************************************************************************************
 // DEFINITIONS
-#define pinIn 79
-#define pinOut 77
+#define pinIn 45
+#define pinOut 44
 
 #define apa_max_packet 10 // maximum path and payload size
 #define apa_timeout 255 // timeout loop count
@@ -36,12 +38,14 @@ physicalLayer::physicalLayer(char id)
 	:inGPIO(pinIn),outGPIO(pinOut)
 {
 	if (id != 0){
-		GPIO inGPIO(75);
-		GPIO outGPIO(73);
+		GPIO inGPIO(115);
+		GPIO outGPIO(49);
 	}
 	inGPIO.setDirection(INPUT);
 	inGPIO.setEdgeType(RISING);
 	outGPIO.setDirection(OUTPUT);
+	
+	outGPIO.setValue(LOW);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -53,18 +57,24 @@ physicalLayer::physicalLayer(char id)
 char physicalLayer::apaPutChar(char c, unsigned char *returnValue){
 	// Start a clock reading
 	// Set Ready Pin
+	std::cout << "Before outGPIO Set in apaPutChar" << std::endl;
 	outGPIO.setValue(HIGH);
+	std::cout << "After first write" << std::endl;
 	
 	// Initialize timeout
 	*returnValue = apa_timeout;
 	while(1){
+		std::cout << "In while" << std::endl;
 		if(0 != inGPIO.getValue())
 			break;
+		std::cout << "After If" << std::endl;
 		*returnValue -= 1;
 		if (*returnValue == 0){
 			return 1;
 		}
 	}
+	
+	cout << "Before Bit 0" << endl;
 	// Bit 0
 	// Set pin to low for start bit
 	outGPIO.setValue(LOW);
