@@ -1411,6 +1411,109 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </deviceset>
 </devicesets>
 </library>
+<library name="fab">
+<packages>
+<package name="R1206">
+<description>&lt;b&gt;RESISTOR&lt;/b&gt;</description>
+<wire x1="0.9525" y1="-0.8128" x2="-0.9652" y2="-0.8128" width="0.1524" layer="51"/>
+<wire x1="0.9525" y1="0.8128" x2="-0.9652" y2="0.8128" width="0.1524" layer="51"/>
+<wire x1="-2.473" y1="0.983" x2="2.473" y2="0.983" width="0.0508" layer="39"/>
+<wire x1="2.473" y1="0.983" x2="2.473" y2="-0.983" width="0.0508" layer="39"/>
+<wire x1="2.473" y1="-0.983" x2="-2.473" y2="-0.983" width="0.0508" layer="39"/>
+<wire x1="-2.473" y1="-0.983" x2="-2.473" y2="0.983" width="0.0508" layer="39"/>
+<smd name="2" x="1.422" y="0" dx="1.6" dy="1.803" layer="1"/>
+<smd name="1" x="-1.422" y="0" dx="1.6" dy="1.803" layer="1"/>
+<text x="-1.27" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-2.54" size="1.27" layer="27">&gt;VALUE</text>
+<rectangle x1="-1.6891" y1="-0.8763" x2="-0.9525" y2="0.8763" layer="51"/>
+<rectangle x1="0.9525" y1="-0.8763" x2="1.6891" y2="0.8763" layer="51"/>
+<rectangle x1="-0.3" y1="-0.7" x2="0.3" y2="0.7" layer="35"/>
+</package>
+<package name="R1206W">
+<description>&lt;b&gt;RESISTOR&lt;/b&gt;&lt;p&gt;
+wave soldering</description>
+<wire x1="-0.913" y1="0.8" x2="0.888" y2="0.8" width="0.1524" layer="51"/>
+<wire x1="-0.913" y1="-0.8" x2="0.888" y2="-0.8" width="0.1524" layer="51"/>
+<wire x1="-2.473" y1="0.983" x2="2.473" y2="0.983" width="0.0508" layer="39"/>
+<wire x1="2.473" y1="0.983" x2="2.473" y2="-0.983" width="0.0508" layer="39"/>
+<wire x1="2.473" y1="-0.983" x2="-2.473" y2="-0.983" width="0.0508" layer="39"/>
+<wire x1="-2.473" y1="-0.983" x2="-2.473" y2="0.983" width="0.0508" layer="39"/>
+<smd name="1" x="-1.499" y="0" dx="1.8" dy="1.2" layer="1"/>
+<smd name="2" x="1.499" y="0" dx="1.8" dy="1.2" layer="1"/>
+<text x="-1.905" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.905" y="-2.54" size="1.27" layer="27">&gt;VALUE</text>
+<rectangle x1="-1.651" y1="-0.8763" x2="-0.9009" y2="0.8738" layer="51"/>
+<rectangle x1="0.889" y1="-0.8763" x2="1.6391" y2="0.8738" layer="51"/>
+<rectangle x1="-0.3" y1="-0.7" x2="0.3" y2="0.7" layer="35"/>
+</package>
+<package name="R1206FAB">
+<wire x1="-2.032" y1="1.016" x2="2.032" y2="1.016" width="0.127" layer="21"/>
+<wire x1="2.032" y1="1.016" x2="2.032" y2="-1.016" width="0.127" layer="21"/>
+<wire x1="2.032" y1="-1.016" x2="-2.032" y2="-1.016" width="0.127" layer="21"/>
+<wire x1="-2.032" y1="-1.016" x2="-2.032" y2="1.016" width="0.127" layer="21"/>
+<smd name="1" x="-1.651" y="0" dx="1.27" dy="1.905" layer="1"/>
+<smd name="2" x="1.651" y="0" dx="1.27" dy="1.905" layer="1"/>
+<text x="-1.778" y="1.27" size="1.016" layer="25" ratio="15">&gt;NAME</text>
+<text x="-1.778" y="-2.286" size="1.016" layer="27" ratio="15">&gt;VALUE</text>
+</package>
+</packages>
+<symbols>
+<symbol name="R-US">
+<wire x1="-2.54" y1="0" x2="-2.159" y2="1.016" width="0.2032" layer="94"/>
+<wire x1="-2.159" y1="1.016" x2="-1.524" y2="-1.016" width="0.2032" layer="94"/>
+<wire x1="-1.524" y1="-1.016" x2="-0.889" y2="1.016" width="0.2032" layer="94"/>
+<wire x1="-0.889" y1="1.016" x2="-0.254" y2="-1.016" width="0.2032" layer="94"/>
+<wire x1="-0.254" y1="-1.016" x2="0.381" y2="1.016" width="0.2032" layer="94"/>
+<wire x1="0.381" y1="1.016" x2="1.016" y2="-1.016" width="0.2032" layer="94"/>
+<wire x1="1.016" y1="-1.016" x2="1.651" y2="1.016" width="0.2032" layer="94"/>
+<wire x1="1.651" y1="1.016" x2="2.286" y2="-1.016" width="0.2032" layer="94"/>
+<wire x1="2.286" y1="-1.016" x2="2.54" y2="0" width="0.2032" layer="94"/>
+<text x="-3.81" y="1.4986" size="1.778" layer="95">&gt;NAME</text>
+<text x="-3.81" y="-3.302" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="2" x="5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="1" x="-5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="RES-US" prefix="R" uservalue="yes">
+<description>&lt;b&gt;Resistor (US Symbol)&lt;/b&gt;
+&lt;p&gt;
+Variants with postfix FAB are widened to allow the routing of internal traces</description>
+<gates>
+<gate name="G$1" symbol="R-US" x="0" y="0"/>
+</gates>
+<devices>
+<device name="1206" package="R1206">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1206W" package="R1206W">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1206FAB" package="R1206FAB">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -1427,11 +1530,12 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
-<part name="U$4" library="SparkFun-AnalogIC" deviceset="OPA344" device=""/>
+<part name="LMP_OP-AMP" library="SparkFun-AnalogIC" deviceset="OPA344" device=""/>
 <part name="JP1" library="adafruit" deviceset="PINHD-1X6" device=""/>
 <part name="JP2" library="adafruit" deviceset="PINHD-1X6" device=""/>
 <part name="JP3" library="adafruit" deviceset="PINHD-1X6" device=""/>
 <part name="SV3" library="con-lstb" deviceset="MA09-1" device=""/>
+<part name="R1" library="fab" deviceset="RES-US" device="1206FAB"/>
 </parts>
 <sheets>
 <sheet>
@@ -1444,11 +1548,12 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <attribute name="MPN" x="-10.16" y="58.42" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="GND3" gate="1" x="83.82" y="0"/>
-<instance part="U$4" gate="G$1" x="134.62" y="111.76"/>
+<instance part="LMP_OP-AMP" gate="G$1" x="134.62" y="111.76"/>
 <instance part="JP1" gate="A" x="139.7" y="66.04"/>
 <instance part="JP2" gate="A" x="170.18" y="114.3"/>
 <instance part="JP3" gate="A" x="66.04" y="66.04"/>
 <instance part="SV3" gate="1" x="63.5" y="20.32"/>
+<instance part="R1" gate="G$1" x="68.58" y="104.14"/>
 </instances>
 <busses>
 </busses>
@@ -1567,7 +1672,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </net>
 <net name="N$2" class="0">
 <segment>
-<pinref part="U$4" gate="G$1" pin="OUT"/>
+<pinref part="LMP_OP-AMP" gate="G$1" pin="OUT"/>
 <wire x1="144.78" y1="111.76" x2="154.94" y2="111.76" width="0.1524" layer="91"/>
 <wire x1="154.94" y1="111.76" x2="154.94" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="154.94" y1="114.3" x2="154.94" y2="116.84" width="0.1524" layer="91"/>
@@ -1576,7 +1681,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="154.94" y1="121.92" x2="154.94" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="154.94" y1="124.46" x2="124.46" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="124.46" y1="124.46" x2="124.46" y2="114.3" width="0.1524" layer="91"/>
-<pinref part="U$4" gate="G$1" pin="-IN"/>
+<pinref part="LMP_OP-AMP" gate="G$1" pin="-IN"/>
 <wire x1="124.46" y1="114.3" x2="129.54" y2="114.3" width="0.1524" layer="91"/>
 <pinref part="JP2" gate="A" pin="1"/>
 <wire x1="167.64" y1="121.92" x2="154.94" y2="121.92" width="0.1524" layer="91"/>
@@ -1605,7 +1710,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <label x="-50.8" y="48.26" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U$4" gate="G$1" pin="V+"/>
+<pinref part="LMP_OP-AMP" gate="G$1" pin="V+"/>
 <wire x1="134.62" y1="119.38" x2="134.62" y2="121.92" width="0.1524" layer="91"/>
 <label x="132.08" y="121.92" size="1.778" layer="95"/>
 </segment>
@@ -1622,7 +1727,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <label x="22.86" y="15.24" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U$4" gate="G$1" pin="+IN"/>
+<pinref part="LMP_OP-AMP" gate="G$1" pin="+IN"/>
 <wire x1="129.54" y1="109.22" x2="124.46" y2="109.22" width="0.1524" layer="91"/>
 <label x="119.38" y="109.22" size="1.778" layer="95"/>
 </segment>
@@ -1694,7 +1799,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <label x="22.86" y="12.7" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U$4" gate="G$1" pin="V-"/>
+<pinref part="LMP_OP-AMP" gate="G$1" pin="V-"/>
 <wire x1="134.62" y1="104.14" x2="134.62" y2="99.06" width="0.1524" layer="91"/>
 <label x="134.62" y="96.52" size="1.778" layer="95"/>
 </segment>
@@ -1743,7 +1848,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <label x="22.86" y="10.16" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="SYS_5V" class="0">
+<net name="N$1" class="0">
 <segment>
 <pinref part="SV3" gate="1" pin="2"/>
 <wire x1="76.2" y1="12.7" x2="71.12" y2="12.7" width="0.1524" layer="91"/>
