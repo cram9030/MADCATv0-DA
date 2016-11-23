@@ -19,8 +19,9 @@ using namespace BlackLib;
 // ******************************************************************************************
 // MAIN
 
-int main()
+int main(int argc, char *argv[])
 {
+	
 	///////////////////////////////
 	// Check If Running as Root  //
 	///////////////////////////////
@@ -28,14 +29,7 @@ int main()
 		cout << "Run program as root" << endl;
 		return -1;
 	}
-	
-	///////////////////////
-	// Reset Flip Flop  //
-	//////////////////////
-	cout << "Reset Flip Flops then press enter" << endl;
-	char temp;
-	cin >> temp;
-	
+		
 	/////////////////////
 	// Initialize ADC  //
 	/////////////////////
@@ -74,8 +68,8 @@ int main()
 	// Data Storage Init //
 	///////////////////////
 	ofstream dataFile; //create file stream
-	dataFile.open ("testing.txt"); //open text file
-	dataFile <<"Time,Elevator1,Elevator2,Rudder,LeftTT,RightTT"<<endl;//write colomn headers
+	dataFile.open (argv[1]); //open text file
+	dataFile <<"Time,Elevator1,Elevator2,Rudder,LeftTT,RightTT,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ay1,ay2,ay3,ay4,ay5,ay6,ay7,gx1,gx2,gx3,gx4,gx5,gx6,gx7,gy1,gy2,gy3,gy4,gy5,gy6,gy7"<<endl;//write colomn headers
 	
 	////////////////
 	// Time Init //
