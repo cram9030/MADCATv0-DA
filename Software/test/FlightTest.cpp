@@ -19,7 +19,7 @@ using namespace BlackLib;
 // ******************************************************************************************
 // MAIN
 
-int main(int argc, char *argv[])
+int main()
 {
 	
 	///////////////////////////////
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 	// Data Storage Init //
 	///////////////////////
 	ofstream dataFile; //create file stream
-	dataFile.open (argv[1]); //open text file
+	dataFile.open ("FlightTest4.txt"); //open text file
 	dataFile <<"Time,Elevator1,Elevator2,Rudder,LeftTT,RightTT,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ay1,ay2,ay3,ay4,ay5,ay6,ay7,gx1,gx2,gx3,gx4,gx5,gx6,gx7,gy1,gy2,gy3,gy4,gy5,gy6,gy7"<<endl;//write colomn headers
 	
 	////////////////
@@ -79,10 +79,15 @@ int main(int argc, char *argv[])
 	///////////////
 	// IMU Init //
 	//////////////
+	ofstream logFile; //create file stream
+	logFile.open ("IMUStatus.txt"); //open text file
 	for (int i=0; i<7;i=i+1){
 		if (!imu.begin()){
-			cout << "Could not intialize IMU" << endl;
+			logFile << "Could not intialize IMU" << endl;
 		} 
+		else{
+			logFile << "Init Successful" << endl;
+		}
 	}
 	
 	while(1){
@@ -105,7 +110,7 @@ int main(int argc, char *argv[])
 				ay4 = imu.ay;
 			}
 			else if(i == 4){
-				ax6 = imu.ax;
+				ax5 = imu.ax;
 				ay5 = imu.ay;
 			}
 			else if(i == 5){
@@ -136,7 +141,7 @@ int main(int argc, char *argv[])
 				gy4 = imu.gy;
 			}
 			else if(i == 4){
-				gx6 = imu.gx;
+				gx5 = imu.gx;
 				gy5 = imu.gy;
 			}
 			else if(i == 5){
