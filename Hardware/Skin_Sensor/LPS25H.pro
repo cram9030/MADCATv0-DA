@@ -1,6 +1,6 @@
-update=Sunday, December 18, 2016 'PMt' 06:27:50 PM
+update=Tuesday, December 27, 2016 'AMt' 10:52:15 AM
 version=1
-last_client=kicad
+last_client=eeschema
 [pcbnew]
 version=1
 LastNetListRead=
@@ -27,7 +27,7 @@ NetIExt=net
 version=1
 [eeschema]
 version=1
-LibDir=
+LibDir=/Users/dcellucci/github/CSL-Part-Library/KICAD/Components
 [eeschema/libraries]
 LibName1=LPS25H-rescue
 LibName2=power
@@ -59,4 +59,9 @@ LibName27=opto
 LibName28=atmel
 LibName29=contrib
 LibName30=valves
-LibName31=/Users/dcellucci/github/CSL-Part-Library/KICAD/Fab
+LibName31=CSL_Power
+LibName32=CSL_uP
+LibName33=Fab
+LibName34=CSL_Sensors
+LibName35=CSL_Conn
+LibName36=CSL_Opto
