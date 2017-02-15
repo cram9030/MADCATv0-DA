@@ -68,13 +68,15 @@ int main()
 	// Data Storage Init //
 	///////////////////////
 	ofstream dataFile; //create file stream
-	dataFile.open ("FlightTest4.txt"); //open text file
-	dataFile <<"Time,Elevator1,Elevator2,Rudder,LeftTT,RightTT,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ay1,ay2,ay3,ay4,ay5,ay6,ay7,gx1,gx2,gx3,gx4,gx5,gx6,gx7,gy1,gy2,gy3,gy4,gy5,gy6,gy7"<<endl;//write colomn headers
+	dataFile.open ("Calibration.txt"); //open text file
+	dataFile <<"Time,ElevatorDeg,TwistDeg,RudderDeg,Elevator1,Elevator2,Rudder,LeftTT,RightTT,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ay1,ay2,ay3,ay4,ay5,ay6,ay7,gx1,gx2,gx3,gx4,gx5,gx6,gx7,gy1,gy2,gy3,gy4,gy5,gy6,gy7"<<endl;//write colomn headers
 	
 	////////////////
 	// Time Init //
 	///////////////
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
+	auto t2 = duration_cast<duration<double>>(high_resolution_clock::now() - t1).count();
+	auto t3 = t2;
 	
 	///////////////
 	// IMU Init //
@@ -85,9 +87,29 @@ int main()
 		if (!imu.begin()){
 			logFile << "Could not intialize IMU" << endl;
 		} 
+		else{
+			logFile << "Init Successful" << endl;
+		}
 	}
 	
+	/////////////////////
+	// Hold Value Init //
+	////////////////////
+	float elDeg, TTDeg, RudDeg;
+	
 	while(1){
+		
+		if ((t2 - t3)>10.0){
+			//Read currently held values
+			cout << "Elevator Value: ";
+			cin >> elDeg;
+			cout << "Torque Tube Value: ";
+			cin >> TTDeg;
+			cout << "Rudder Value: ";
+			cin >> RudDeg;
+			t3 = duration_cast<duration<double>>(high_resolution_clock::now() - t1).count();
+		}
+		
 		for (int i=0; i<7;i=i+1){
 			imu.read2AccelAxis(1);
 			if (i == 0 ){
@@ -150,7 +172,8 @@ int main()
 				gy7 = imu.gy;
 			}
 		}
-		dataFile <<duration_cast<duration<double>>(high_resolution_clock::now() - t1).count()<<","<<analog0.getNumericValue()<<","<<analog1.getNumericValue()<<","<<analog2.getNumericValue()<<","<<analog4.getNumericValue()<<","<<analog6.getNumericValue()<<','<<ax1<<','<<ax2<<','<<ax3<<','<<ax4<<','<<ax5<<','<<ax6<<','<<ax7<<','<<ay1<<','<<ay2<<','<<ay3<<','<<ay4<<','<<ay5<<','<<ay6<<','<<ay7<<','<<gx1<<','<<gx2<<','<<gx3<<','<<gx4<<','<<gx5<<','<<gx6<<','<<gx7<<','<<gy1<<','<<gy2<<','<<gy3<<','<<gy4<<','<<gy5<<','<<gy6<<','<<gy7<<endl;
+		t2 = duration_cast<duration<double>>(high_resolution_clock::now() - t1).count();
+		dataFile <<t2<<","<<elDeg<<","<<TTDeg<<","<<RudDeg<<","<<analog0.getNumericValue()<<","<<analog1.getNumericValue()<<","<<analog2.getNumericValue()<<","<<analog4.getNumericValue()<<","<<analog6.getNumericValue()<<','<<ax1<<','<<ax2<<','<<ax3<<','<<ax4<<','<<ax5<<','<<ax6<<','<<ax7<<','<<ay1<<','<<ay2<<','<<ay3<<','<<ay4<<','<<ay5<<','<<ay6<<','<<ay7<<','<<gx1<<','<<gx2<<','<<gx3<<','<<gx4<<','<<gx5<<','<<gx6<<','<<gx7<<','<<gy1<<','<<gy2<<','<<gy3<<','<<gy4<<','<<gy5<<','<<gy6<<','<<gy7<<endl;
 	}
 	
 	return 0;
